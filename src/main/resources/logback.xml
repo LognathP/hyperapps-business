@@ -1,0 +1,81 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+<!--     <property name="LOG_PATH" value="/var/log/hyperapps" />
+ -->   
+  <appender name="INFOAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/infolog.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
+    </encoder>
+     <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>INFO</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_PATH}/archived/infolog_%d{dd-MM-yyyy}_%i.log</fileNamePattern>
+        <maxFileSize>10MB</maxFileSize>
+        <maxHistory>10</maxHistory>
+        <totalSizeCap>100MB</totalSizeCap>
+    </rollingPolicy>
+</appender>
+
+ <appender name="DEBUGAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/debuglog.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
+    </encoder>
+     <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>DEBUG</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_PATH}/archived/debuglog_%d{dd-MM-yyyy}_%i.log</fileNamePattern>
+        <maxFileSize>10MB</maxFileSize>
+        <maxHistory>10</maxHistory>
+        <totalSizeCap>100MB</totalSizeCap>
+    </rollingPolicy>
+</appender>
+
+<appender name="ERRORAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/errorlog.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
+    </encoder>
+      <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>ERROR</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_PATH}/archived/errorlog_%d{dd-MM-yyyy}_%i.log</fileNamePattern>
+        <maxFileSize>10MB</maxFileSize>
+        <maxHistory>10</maxHistory>
+        <totalSizeCap>100MB</totalSizeCap>
+    </rollingPolicy>
+</appender>
+   
+     	<logger name="com.fss.cms.scheduler" additivity="false" level="DEBUG">
+            <appender-ref ref="DEBUGAPPENDER" />
+             <appender-ref ref="INFOAPPENDER" />
+              <appender-ref ref="ERRORAPPENDER" />
+        </logger>
+          
+        
+        <root level="INFO" >
+      <appender-ref ref = "STDOUT"/>
+       
+   </root>
+        
+        
+      
+   
+</configuration>
