@@ -4,10 +4,6 @@ public interface RetailerQueryConstants {
 	
 	String STORE_ID_CHECK = "select count(1) from profiles where id	= ?";
 	
-	String STORE_RUNNING_STATUS_UPDATE = "update profiles set business_operating_mode = ? where id = ?";
-	
-	String STORE_TAX_INFO_UPDATE = "update profiles set store_tax_status =?,store_tax_percentage=?,store_tax_gst=? where id = ?";
-	
 	String GET_USER_DETAILS = "select u.id,u.name,u.email,u.parent_id,u.user_group,u.store_id,u.is_owner,w.message,w.designation from users u,welcomes w where u.store_id = w.store_id and u.remember_token = ?";
 	
 	String GET_STORE_PROFILE_DETAILS = "select p.business_name,p.business_short_desc,p.business_long_desc,p.status,p.id from users u,profiles p where u.id = p.user_id and u.store_id = p.id and u.id = ?";
@@ -32,6 +28,8 @@ public interface RetailerQueryConstants {
 	String UPDATE_TEAM_COUNT = "update users set team_member_count = team_member_count + 1 where id = ?";
 	
 	String REMOVE_TEAM_MEMBER = "DELETE FROM users WHERE email=? and parent_id=?";
+	
+	
 }
 
 

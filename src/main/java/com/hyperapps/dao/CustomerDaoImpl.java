@@ -17,7 +17,7 @@ import com.hyperapps.constants.CustomerQueryConstants;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.Categories;
 import com.hyperapps.model.CategoryTree;
-import com.hyperapps.model.Child_category;
+import com.hyperapps.model.CategoryTree.Child_category;
 import com.hyperapps.model.Customer;
 import com.hyperapps.model.CustomerAddress;
 import com.hyperapps.model.UserProfile;
@@ -29,7 +29,6 @@ import com.hyperapps.model.Profile.Business_phone;
 import com.hyperapps.model.PromotionData;
 import com.hyperapps.model.SliderImagesData;
 import com.hyperapps.model.Store;
-import com.hyperapps.model.Sub_category;
 import com.hyperapps.request.AddAddressRequest;
 import com.hyperapps.util.CommonUtils;
 
@@ -333,57 +332,6 @@ public class CustomerDaoImpl implements CustomerDao {
 		return catList;
 	}
 	
-	@Override
-	public List<Product> getProductsList(int storeId,int catgId) {
-		Connection connection = null;
-		PreparedStatement preStmt = null;
-		ResultSet res = null;
-		List<Product> prodList = new ArrayList<>();
-		String query = null;
-		query = CustomerQueryConstants.GET_PRODUCT_DETAILS_BY_CATEGORY;
-		try {
-			connection = jdbctemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(query);
-			preStmt.setInt(1, storeId);
-			preStmt.setInt(2, catgId);
-			res = preStmt.executeQuery();
-			while(res.next()) {
-				Product products = new Product();
-				products.setId(res.getInt("id"));
-				products.setName(res.getString("name"));
-				products.setCategory_id(res.getInt("category_id"));
-				products.setDescription(res.getString("description"));
-				products.setImage_path(res.getString("image_path"));
-				products.setActive(res.getInt("active"));
-				products.setProduct_id(res.getInt("product_id"));
-				products.setStore_id(res.getInt("store_id"));
-				products.setPrice(res.getString("price"));
-				products.setSpecial_price(res.getString("special_price"));
-				products.setPromotional_price(res.getString("promotional_price"));
-				products.setWeight(res.getString("weight"));
-				products.setColor(res.getString("color"));
-				products.setSize(res.getString("size"));
-				products.setQuantity(res.getInt("quantity"));
-				products.setOption1(res.getString("option1"));
-				products.setOption2(res.getString("option2"));
-				prodList.add(products);
-						
-			}
-
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getProductsList " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				CommonUtils.closeDB(connection, res, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB ON getProductsList " + e.getMessage());
-			}
-
-		}
-		return prodList;
-	}
 	
 	
 	@Override
@@ -542,87 +490,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 		return store;
 	}
-	@Override
-	public List<CategoryTree> getInventoryList(int storeId) {
-		Connection connection = null;
-		PreparedStatement preStmt = null;
-		ResultSet res = null;
-		PreparedStatement preStmt1 = null;
-		ResultSet res1 = null;
-		PreparedStatement preStmt2 = null;
-		ResultSet res2 = null;
-		List<CategoryTree> catList = new ArrayList<>();
-		
-    	
-
-		try {
-			connection = jdbctemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(CustomerQueryConstants.GET_STORE_ROOT_CATEGORY);
-			preStmt.setInt(1, storeId);
-			res = preStmt.executeQuery();
-			while(res.next()) {
-				CategoryTree catTree = new CategoryTree();
-				catTree.setName(res.getString(1));
-				catTree.setImage_path(res.getString(2));
-				catTree.setActive(res.getInt(3));
-				catTree.setRootcategory_id(res.getInt(4));
-				catTree.setId(res.getInt(5));
-				preStmt1 = connection.prepareStatement(CustomerQueryConstants.GET_STORE_PARENT_CATEGORY);
-				preStmt1.setInt(1, catTree.getRootcategory_id());
-				res1 = preStmt1.executeQuery();
-				List<Sub_category> subCatList = new ArrayList<>();
-				while(res1.next())
-				{
-					Sub_category subCat = new Sub_category();
-					subCat.setId(res1.getInt(1));
-					subCat.setRootcategory_id(res1.getInt(2));
-					subCat.setParentcategory_id(res1.getInt(3));
-					subCat.setName(res1.getString(4));
-					subCat.setImage_path(res1.getString(5));
-					subCat.setActive(res1.getInt(6));
-					preStmt2 = connection.prepareStatement(CustomerQueryConstants.GET_STORE_CHILD_CATEGORY);
-					preStmt2.setInt(1, catTree.getRootcategory_id());
-					preStmt2.setInt(2, subCat.getParentcategory_id());
-					res2 = preStmt2.executeQuery();
-					List<Child_category> childCatList = new ArrayList<>();
-					while(res2.next())
-					{
-						Child_category childCat = new Child_category();
-						childCat.setId(res2.getInt(1));
-						childCat.setRootcategory_id(res2.getInt(2));
-						childCat.setParentcategory_id(res2.getInt(3));
-						childCat.setActive(res2.getInt(4));
-						childCat.setName(res2.getString(5));
-						childCat.setImage_path(res2.getString(6));
-						childCat.setIsDummy(res2.getInt(7));
-						childCatList.add(childCat);
-					}
-					res2.close();
-					preStmt2.close();
-					subCat.setChild_category(childCatList);
-					subCatList.add(subCat);
-				}
-				res1.close();
-				preStmt1.close();
-				catTree.setSub_category(subCatList);
-				catList.add(catTree);
-			}
-
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getInventoryList " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				CommonUtils.closeDB(connection, res, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB ON getInventoryList " + e.getMessage());
-			}
-
-		}
-		return catList;
-	}
-
+	
 	@Override
 	public List<SliderImagesData> getSliderImages(int storeId) {
 		Connection connection = null;
@@ -842,7 +710,6 @@ public class CustomerDaoImpl implements CustomerDao {
 				childCat.setActive(res.getInt(4));
 				childCat.setName(res.getString(5));
 				childCat.setImage_path(res.getString(6));
-				childCat.setIsDummy(res.getInt(7));
 				preStmt1 = connection.prepareStatement(CustomerQueryConstants.GET_PRODUCT_DETAILS_BY_CATEGORY);
 				preStmt1.setInt(1, store_id);
 				preStmt1.setInt(2, childCat.getId());
@@ -871,8 +738,6 @@ public class CustomerDaoImpl implements CustomerDao {
 				}
 				res1.close();
 				preStmt1.close();
-				childCat.setProducts(prodList.size());
-				childCat.setProduct_list(prodList);
 				childCatList.add(childCat);
 			}
 				
@@ -892,51 +757,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		return childCatList;
 	}
 	
-	@Override
-	public List<OfferHistoryData> getOnGoingOfferDetails(int orderId, int customerId) {
-		Connection connection = null;
-		PreparedStatement preStmt = null;
-		ResultSet res = null;
-		List<OfferHistoryData> ohl = new ArrayList<OfferHistoryData>();
-		try {
-			connection = jdbctemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(CustomerQueryConstants.GET_OFFER_DETAILS);
-			preStmt.setInt(1, customerId);
-			preStmt.setInt(2, orderId);
-			res = preStmt.executeQuery();
-			while (res.next()) {
-				OfferHistoryData oh = new OfferHistoryData();
-				oh.setId(res.getInt(1));
-				oh.setStore_id(res.getString(2));
-				oh.setActive(res.getString(3));
-				oh.setOffer_valid(res.getString(4));
-				oh.setOffer_start_date(res.getString(5));
-				oh.setOffer_type(res.getString(6));
-				oh.setOffer_flat_amount(res.getString(7));
-				oh.setOffer_percentage(res.getString(8));
-				oh.setOffer_description(res.getString(9));
-				oh.setOffer_heading(res.getString(10));
-				oh.setOffer_max_apply_count(res.getInt(11));
-				oh.setOffer_percentage_max_amount(res.getString(12));
-				oh.setOffer_applied(res.getInt(13) > 0 ? 1 : 0);
-				ohl.add(oh);				
-			}
-
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getOnGoingOfferDetails " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				CommonUtils.closeDB(connection, res, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB getOnGoingOfferDetails " + e.getMessage());
-			}
-
-		}
-		return ohl;
-	}
-
+	
 	
 
 }

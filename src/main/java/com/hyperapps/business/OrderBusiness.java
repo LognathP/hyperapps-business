@@ -2,6 +2,7 @@ package com.hyperapps.business;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
@@ -25,6 +26,8 @@ import com.hyperapps.request.OrderRequest;
 import com.hyperapps.service.OrderService;
 import com.hyperapps.util.CalendarUtil;
 import com.hyperapps.util.CommonUtils;
+import com.hyperapps.validation.OrderValidationService;
+import com.hyperapps.validation.RetailerValidationService;
 
 @Component
 public class OrderBusiness {
@@ -44,70 +47,47 @@ public class OrderBusiness {
 	@Autowired
 	OrderService orderService;
 	
-	@SuppressWarnings("unchecked")
-	public Object getAllRetailerOrders(String storeId)
+	@Autowired
+	RetailerValidationService retailerValidationService;
+	
+	@Autowired
+	OrderValidationService orderValidationService;
+	
+	
+	public Object getAllRetailerOrders(String storeId,String token)
 	{
 		LOGGER.info(this.getClass(),"ALL RETAILER ORDER BUSINESS LAYER");
-		List<Order> orderList = new ArrayList<Order>();
-		JSONObject js = new JSONObject();
-		orderList = orderService.getAllRetailerOrder(storeId);
-		if(!orderList.isEmpty())
-		{
-			LOGGER.info(this.getClass(),"ORDER LISTED SUCCESSFULLY");
-			response.setStatus(HttpStatus.OK.toString());
-			response.setMessage("Orders listed Successfully");
-			response.setError(HyperAppsConstants.RESPONSE_FALSE);
-			js.put("orders", orderList);
-			response.setData(js);
-			apiResponse.setResponse(response);
-			return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
-		
+		ResponseEntity<Object> respEntity = null;
+		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
+			if ((respEntity = retailerValidationService.validateStoreId(Integer.parseInt(storeId), respEntity)) == null) {
+				List<Order> orderList = new ArrayList<Order>();
+				orderList = orderService.getAllRetailerOrder(storeId);
+				if (orderList.size() > 0) {
+					LOGGER.info(this.getClass(),"ORDER LISTED SUCCESSFULLY");
+					response.setStatus(HttpStatus.OK.toString());
+					response.setMessage("Orders listed Successfully");
+					HashMap<String,Object> orders = new HashMap<String,Object>();
+					orders.put("orders", orderList);
+					JSONObject jb = new JSONObject(orders);
+					response.setData(jb);
+					response.setError(HyperAppsConstants.RESPONSE_FALSE);
+					apiResponse.setResponse(response);
+					respEntity = new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+				} else {
+					LOGGER.error(this.getClass(),"ORDER LIST FAILED");
+					response.setStatus(HttpStatus.NOT_FOUND.toString());
+					response.setMessage("No Orders Found");
+					response.setError(HyperAppsConstants.RESPONSE_TRUE);
+					response.setData(null);
+					apiResponse.setResponse(response);
+					return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);	
+				}
+			}
 		}
-		else
-		{
-			LOGGER.error(this.getClass(),"ORDER LIST FAILED");
-			response.setStatus(HttpStatus.NOT_FOUND.toString());
-			response.setMessage("No Orders Found");
-			response.setError(HyperAppsConstants.RESPONSE_TRUE);
-			response.setData(null);
-			apiResponse.setResponse(response);
-			return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);	
-		}
+		return respEntity;
 		
 	}
 	
-	@SuppressWarnings("unchecked")
-	public Object getAllCustomerOrders(String customerId)
-	{
-		LOGGER.info(this.getClass(),"ALL CUSTOMER ORDER BUSINESS LAYER");
-		List<Order> orderList = new ArrayList<Order>();
-		orderList = orderService.getAllCustomerOrder(customerId);
-		JSONObject js = new JSONObject();
-		if(!orderList.isEmpty())
-		{
-			LOGGER.info(this.getClass(),"ORDER LISTED SUCCESSFULLY");
-			response.setStatus(HttpStatus.OK.toString());
-			response.setMessage("Orders listed Successfully");
-			response.setError(HyperAppsConstants.RESPONSE_FALSE);
-			js.put("orders", orderList);
-			response.setData(js);
-			apiResponse.setResponse(response);
-			return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
-		
-		}
-		else
-		{
-			LOGGER.error(this.getClass(),"ORDER LIST FAILED");
-			response.setStatus(HttpStatus.NOT_FOUND.toString());
-			response.setMessage("No Orders Found");
-			response.setError(HyperAppsConstants.RESPONSE_TRUE);
-			response.setData(null);
-			apiResponse.setResponse(response);
-			return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);		
-		}
-		
-	}
-
 	public Object cancelOrder(String order_id,int order_status) {
 		LOGGER.info(this.getClass(),"RETAILER CANCEL ORDER BUSINESS LAYER");
 		if(orderService.getOrderStatus(order_id) == HyperAppsConstants.ORDER_INITIATED || 
@@ -277,81 +257,6 @@ public class OrderBusiness {
 	}
 
 
-
-	public Object placeOrder(int store_id, int customer_id, double order_total, double order_grand_total,
-			String order_details, String order_items, String location, int offer_id, String payment_details) {
-		Store store = new Store();
-		LOGGER.info(this.getClass(),"REQUEST DETAILS IN BUSINESS=== STORE ID"+store_id+" CUSTOMER ID "+customer_id);
-		OrderRequest orderReq = setOrderDetails(store_id, customer_id, order_total, order_grand_total,
-				order_details, order_items, location, offer_id, payment_details);
-		LOGGER.info(this.getClass(),"==========ORDER DETAILS=====");
-		LOGGER.info(this.getClass(),orderReq.toString());
-		store = orderService.getStoreDetails(store_id,store);
-		LOGGER.info(this.getClass(),"==========STORE DETAILS=====");
-		LOGGER.info(this.getClass(),String.valueOf(store.getStore_id()) + "--- "+store.toString());
-		
-		if(store.getStore_id()!=0)
-		{
-			store = validateDeliveryTime(store);
-			if(store.isStoreTimeAvailable())
-			{
-				store = validateDeliveryLocation(store, orderReq);
-				if(store.isDeliveryAvailable())
-				{
-					if(orderService.placeOrder(orderReq))
-					{
-						LOGGER.info(this.getClass(),"ORDER PLACED SUCCESSFULLY");
-						response.setStatus(HttpStatus.OK.toString());
-						response.setMessage("Order Placed Successfully");
-						response.setError(HyperAppsConstants.RESPONSE_FALSE);
-						apiResponse.setResponse(response);
-						return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);						
-					}
-					else
-					{
-						LOGGER.error(this.getClass(),"UNABLE TO PLACE ORDER");
-						response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-						response.setMessage("Unable to Place Order !!");
-						response.setError(HyperAppsConstants.RESPONSE_TRUE);
-						apiResponse.setResponse(response);
-						return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);	
-					}
-				}
-				else
-				{
-					LOGGER.error(this.getClass(),"STORE LOCATION AVAILABLITY NOT FOUND");
-					response.setStatus(HttpStatus.NOT_FOUND.toString());
-					response.setMessage("Expected delivery location not found !!");
-					response.setError(HyperAppsConstants.RESPONSE_TRUE);
-					apiResponse.setResponse(response);
-					return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);	
-				}
-
-			}
-			else
-			{
-				LOGGER.error(this.getClass(),"STORE TIME AVAILABLITY NOT FOUND");
-				response.setStatus(HttpStatus.NOT_FOUND.toString());
-				response.setMessage("Store Not Accepting New Orders at this Time!");
-				response.setError(HyperAppsConstants.RESPONSE_TRUE);
-				apiResponse.setResponse(response);
-				return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);	
-			}
-		}
-		else
-		{
-		
-			LOGGER.error(this.getClass(),"STORE NOT FOUND");
-			response.setStatus(HttpStatus.NOT_FOUND.toString());
-			response.setMessage("Store not Found");
-			response.setError(HyperAppsConstants.RESPONSE_TRUE);
-			apiResponse.setResponse(response);
-			return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);	
-		}
-		
-	
-	}
-
 	public Store validateDeliveryTime(Store store) {
 		List<Business_operating_timings> ls = store.getBusiness_operating_timings();
 		if( ls!=null && ls.size()>0)
@@ -432,5 +337,97 @@ public class OrderBusiness {
 		return orderReq;
 		
 	}
-		
+
+	public Object processOrder(String token, int order_id, String order_total, String order_grand_total,
+			String order_details, String orderItems) {
+		LOGGER.info(this.getClass(), "PROCESS ORDER BUSINESS LAYER");
+		ResponseEntity<Object> respEntity = null;
+		int orderStat = orderService.getOrderStatus(String.valueOf(order_id));
+		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
+			if(orderStat != HyperAppsConstants.ORDER_CANCELED_BY_CUSTOMER || orderStat != HyperAppsConstants.ORDER_CANCELED_BY_RETAILER)
+			{
+				if (orderService.updateOrderStatus(String.valueOf(order_id),
+						HyperAppsConstants.getNewOrderStatus(orderStat))) {
+					orderService.updateOrderDetails(order_id, order_total, order_grand_total, order_details);
+					LOGGER.info(this.getClass(), "ORDER UPDATED SUCCESSFULLY");
+					response.setStatus(HttpStatus.OK.toString());
+					response.setMessage("Order Updated Successfully");
+					response.setError(HyperAppsConstants.RESPONSE_FALSE);
+					response.setData(null);
+					apiResponse.setResponse(response);
+					respEntity = new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+				} else {
+					LOGGER.error(this.getClass(), "UNABLE TO UPDATED ORDER STATUS");
+					response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+					response.setMessage("Unable to Updated Order Status");
+					response.setError(HyperAppsConstants.RESPONSE_TRUE);
+					response.setData(null);
+					apiResponse.setResponse(response);
+					respEntity = new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+				}
+			}
+			else
+			{
+				LOGGER.error(this.getClass(),"UNABLE TO UPDATE ORDER STATUS");
+				response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				response.setMessage("Order Cannot be Updated,Since Order Already " + HyperAppsConstants.getOrderStatus(orderStat));
+				response.setError(HyperAppsConstants.RESPONSE_TRUE);
+				response.setData(null);
+				apiResponse.setResponse(response);
+				respEntity = new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
+			}
+			
+		}
+		return respEntity;
+	}
+
+	public Object cancelOrder(String token, int order_id, String order_details) {
+		ResponseEntity<Object> respEntity = null;
+		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
+				if (orderService.updateOrderStatus(String.valueOf(order_id),HyperAppsConstants.ORDER_CANCELED_BY_RETAILER)) {
+					orderService.updateCancelledOrderDetails(order_id,order_details);
+					LOGGER.info(this.getClass(), "ORDER CANCELLED SUCCESSFULLY");
+					response.setStatus(HttpStatus.OK.toString());
+					response.setMessage("Order Cancelled Successfully");
+					response.setError(HyperAppsConstants.RESPONSE_FALSE);
+					response.setData(null);
+					apiResponse.setResponse(response);
+					respEntity = new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+				} else {
+					LOGGER.error(this.getClass(), "UNABLE TO CANCEL ORDER STATUS");
+					response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+					response.setMessage("Unable to Cancel Order Status");
+					response.setError(HyperAppsConstants.RESPONSE_TRUE);
+					response.setData(null);
+					apiResponse.setResponse(response);
+					respEntity = new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+				}
+		}
+		return respEntity;
+	}
+
+	public Object deliverOrder(String token, int order_id) {
+		ResponseEntity<Object> respEntity = null;
+		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
+				if (orderService.updateOrderStatus(String.valueOf(order_id),HyperAppsConstants.ORDER_COMPLETED)) {
+					LOGGER.info(this.getClass(), "ORDER DELIVERY UPDATED SUCCESSFULLY");
+					response.setStatus(HttpStatus.OK.toString());
+					response.setMessage("Order Deliver Updated Successfully");
+					response.setError(HyperAppsConstants.RESPONSE_FALSE);
+					response.setData(null);
+					apiResponse.setResponse(response);
+					respEntity = new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+				} else {
+					LOGGER.error(this.getClass(), "UNABLE TO CANCEL ORDER STATUS");
+					response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+					response.setMessage("Unable to Deliver Order");
+					response.setError(HyperAppsConstants.RESPONSE_TRUE);
+					response.setData(null);
+					apiResponse.setResponse(response);
+					respEntity = new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+				}
+		}
+		return respEntity;
+	}
+
 }

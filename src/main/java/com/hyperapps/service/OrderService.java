@@ -18,15 +18,15 @@ public interface OrderService {
 	
 	public List<Order> getAllRetailerOrder(String storeId);
 
-	public List<Order> getAllCustomerOrder(String customerId);
-
 	public boolean updateOrderStatus(String order_id,int status);
 	
 	public int getOrderStatus(String order_id);
 
-	public boolean placeOrder(OrderRequest orderReq);
-	
 	public Store getStoreDetails(int store_id, Store store);
+
+	public void updateOrderDetails(int order_id, String order_total, String order_grand_total, String order_details);
+
+	public void updateCancelledOrderDetails(int order_id, String order_details);
 	
 
 	

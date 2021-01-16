@@ -13,11 +13,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
+import com.hyperapps.constants.CustomerQueryConstants;
 import com.hyperapps.constants.OrderQueryConstants;
 import com.hyperapps.constants.RetailerQueryConstants;
 import com.hyperapps.logger.ConfigProperties;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.Category;
+import com.hyperapps.model.Product;
 import com.hyperapps.model.Profile;
 import com.hyperapps.model.Profile.Business_operating_timings;
 import com.hyperapps.model.Profile.Business_phone;
@@ -75,66 +77,6 @@ public class RetailerDaoImpl implements RetailerDao {
 		return stat;
 	}
 	
-	@Override
-	public boolean updateStoreRunningStatus(int store_id,int running_status) {
-		Connection connection = null;
-		PreparedStatement preStmt = null;
-		boolean updStatus = false;
-		try {
-			connection = jdbctemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(RetailerQueryConstants.STORE_RUNNING_STATUS_UPDATE);
-			preStmt.setInt(1, running_status);
-			preStmt.setInt(2, store_id);
-			if (preStmt.executeUpdate()>0) {
-				updStatus = true;
-			}
-
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE updateStoreRunningStatus " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				CommonUtils.closeDB(connection, null, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB updateStoreRunningStatus " + e.getMessage());
-			}
-
-		}
-		return updStatus;
-	}
-	
-	@Override
-	public boolean updateTaxInfo(int store_id, int tax_status, int tax_percentage, String tax_gst) {
-		Connection connection = null;
-		PreparedStatement preStmt = null;
-		boolean updStatus = false;
-		try {
-			connection = jdbctemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(RetailerQueryConstants.STORE_TAX_INFO_UPDATE);
-			preStmt.setInt(1, tax_status);
-			preStmt.setInt(2, tax_percentage);
-			preStmt.setString(3, tax_gst);
-			preStmt.setInt(4, store_id);
-			if (preStmt.executeUpdate()>0) {
-				updStatus = true;
-			}
-
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE updateTaxInfo " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				CommonUtils.closeDB(connection, null, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB updateTaxInfo " + e.getMessage());
-			}
-
-		}
-		return updStatus;
-	}
-
 	@Override
 	public User getUserDetails(String token) {
 		Connection connection = null;
@@ -542,5 +484,7 @@ public class RetailerDaoImpl implements RetailerDao {
 		}
 		return stat;
 	}
+	
+	
 	
 }

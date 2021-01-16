@@ -16,14 +16,14 @@ public interface OrderDao {
 	
 	public List<Order> getAllRetailerOrders(String storeId);
 
-	public List<Order> getAllCustomerOrders(String customerId);
-
 	public boolean updateOrderStatus(String order_id,int status);
 	
 	public int getOrderStatus(String orderId);
 
 	public Store getStoreDetails(int store_id, Store store);
 
-	public boolean placeOrder(OrderRequest orderReq);
-	
-	}
+	public void updateOrderDetails(int order_id, String order_total, String order_grand_total, String order_details);
+
+	public void updateCancelledOrderDetails(int order_id, String order_details);
+
+}

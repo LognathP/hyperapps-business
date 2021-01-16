@@ -9,7 +9,7 @@ import com.hyperapps.dao.CustomerDao;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.Categories;
 import com.hyperapps.model.CategoryTree;
-import com.hyperapps.model.Child_category;
+import com.hyperapps.model.CategoryTree.Child_category;
 import com.hyperapps.model.Customer;
 import com.hyperapps.model.CustomerAddress;
 import com.hyperapps.model.UserProfile;
@@ -108,11 +108,6 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	@Override
-	public List<Product> getProductsList(int storeId,int catId) {
-		return customerDao.getProductsList(storeId,catId);
-	}
-	
-	@Override
 	public UserProfile getCustomerProfile(int customer_id) {
 		return customerDao.getCustomerProfile(customer_id);
 	}
@@ -125,11 +120,6 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Store getStoreDeliverAreas(int storeId,String store_latitude, String store_longitude) {
 		return customerDao.getStoreDeliverAreas(storeId,store_latitude,store_longitude);
-	}
-	
-	@Override
-	public List<CategoryTree> getInventoryList(int store_id) {
-		return customerDao.getInventoryList(store_id);
 	}
 	
 	@Override
@@ -152,10 +142,7 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDao.getCategoryDetails(store_id,paranetCatgoryId,subCategoryId);
 	}
 	
-	@Override
-	public List<OfferHistoryData> getOnGoingOfferDetails(int storeId, int customerId) {
-		return customerDao.getOnGoingOfferDetails(storeId,customerId);
-	}
+	
 
 	
 

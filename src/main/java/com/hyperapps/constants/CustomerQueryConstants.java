@@ -37,11 +37,6 @@ public interface CustomerQueryConstants {
 			"d.min_order_amount,d.delivery_charge,p.store_tax_status,p.store_tax_percentage,p.store_tax_gst,p.status from profiles p,deliveries d where p.id = d.store_id \r\n" + 
 			"and p.id = ?";
 	
-	String GET_STORE_ROOT_CATEGORY="SELECT r.name,r.image_path,r.active,i.rootcategory_id,i.id FROM rootcategories r,invrootcategories i where r.id = i.rootcategory_id and i.store_id = ?";
-	
-	String GET_STORE_PARENT_CATEGORY="SELECT p.id,p.rootcategory_id,ic.parentcategory_id,p.name,p.image_path,p.active from parentcategories p,invparentcategories ic where p.id = ic.parentcategory_id and p.rootcategory_id = ic.rootcategory_id and p.rootcategory_id = ?";
-	
-	String GET_STORE_CHILD_CATEGORY="select c.id,c.rootcategory_id,c.parentcategory_id,c.active,c.name,c.image_path,c.IsDummy from childcategories c,invchildcategories i where c.rootcategory_id = i.rootcategory_id and c.parentcategory_id = i.parentcategory_id and c.rootcategory_id = ? and  c.parentcategory_id = ?";
 	
 	String GET_SLIDER_DETAILS = "select store_id,image_path,productids from slider_image where store_id=?";
 	
@@ -56,30 +51,10 @@ public interface CustomerQueryConstants {
 	
 	String GET_STORE_CHILD_CATEGORY_BY_STORE="select c.id,c.rootcategory_id,c.parentcategory_id,c.active,c.name,c.image_path,c.IsDummy from childcategories c,invchildcategories i where c.rootcategory_id = i.rootcategory_id and c.parentcategory_id = i.parentcategory_id and c.rootcategory_id = ? and  c.parentcategory_id = ? and i.store_id=? ";
 	
-	String GET_PRODUCT_DETAILS_BY_CATEGORY= "select p.id,p.name,p.category_id,p.description,p.image_path,p.active,i.product_id,i.store_id,i.price,\r\n" + 
+	public String GET_PRODUCT_DETAILS_BY_CATEGORY= "select p.id,p.name,p.category_id,p.description,p.image_path,p.active,i.product_id,i.store_id,i.price,\r\n" + 
 			"i.special_price,i.promotional_price,i.weight,i.color,i.`size`,i.quantity,i.option1,i.option2 from products p,invproducts i where p.id = i.product_id and i.store_id = ? and i.category_id = ?";
 	
 
-	String GET_OFFER_DETAILS = "select\r\n" + 
-			"	o.id,\r\n" + 
-			"	o.store_id,\r\n" + 
-			"	o.active,\r\n" + 
-			"	o.offer_valid,\r\n" + 
-			"	o.offer_start_date,\r\n" + 
-			"	o.offer_type,\r\n" + 
-			"	o.offer_flat_amount,\r\n" + 
-			"	o.offer_percentage,\r\n" + 
-			"	o.offer_description,\r\n" + 
-			"	o.offer_heading,\r\n" + 
-			"	o.offer_max_apply_count,\r\n" + 
-			"	o.offer_percentage_max_amount,\r\n" + 
-			"	(select count(1) from offer_order oo,orders o2 where oo.offer_id = o.id and oo.order_id = o2.id and o2.customer_id = ?) as applied\r\n" + 
-			"from\r\n" + 
-			"	offers o\r\n" + 
-			"where\r\n" + 
-			"o.store_id = ?\r\n" + 
-			"	and o.offer_start_date <= current_date\r\n" + 
-			"	and o.offer_valid >= current_date";
 	
 }
 

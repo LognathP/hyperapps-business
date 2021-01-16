@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
-public class Order extends CustomerInfo {
+public class Order {
 
 	@Qualifier("order_id")
 	@JsonProperty("order_id")

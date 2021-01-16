@@ -11,12 +11,6 @@ import com.hyperapps.request.ProfileUpdateRequest;
 @Service
 public interface RetailerService {
 	
-	public boolean updateStoreRunningStatus(int storeId,int running_status);
-
-	public boolean updateTaxInfo(int store_id, int tax_status, int tax_percentage, String tax_gst);
-	
-	public Store getStoreBusinessTime(int storeId,Store store);
-	
 	public User getUserDetails(String token);
 
 	public List<Profile> getProfileDetails(int userId);

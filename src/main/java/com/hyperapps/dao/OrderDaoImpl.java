@@ -80,114 +80,6 @@ public class OrderDaoImpl implements OrderDao {
 					pay.setResult(pa.getResult());
 					pay.setStatus(pa.getStatus());
 					}
-				order.setPayment_details(pay);				
-				CustomerInfo customerInfo = new CustomerInfo();
-				customerInfo.setCustomer_name(res.getString(11));
-				customerInfo.setCustomers_email_address(res.getString(12));
-				customerInfo.setCustomers_telephone(res.getString(13));
-				order.setCustomer_info(customerInfo);
-				DeliveryInfo deliverInfo = new DeliveryInfo();
-				Gson gson = new Gson(); 
-				DeliveryInfo[] userArray = gson.fromJson(res.getString(14), DeliveryInfo[].class); 
-				for(DeliveryInfo df : userArray) {
-					deliverInfo.setName(df.getName());
-					deliverInfo.setAddress(df.getAddress());
-					deliverInfo.setLatitude(df.getLatitude());
-					deliverInfo.setLongitutde(df.getLongitutde());
-				}
-				List<OrderItems> odList = new ArrayList<OrderItems>();
-				order.setDeliveryInfo(deliverInfo);
-				preStmt2 = connection.prepareStatement(OrderQueryConstants.GET_ORDER_ITEMS_BYID);
-				preStmt2.setInt(1, order.getOrder_id());
-				res2 = preStmt2.executeQuery();
-				while (res2.next()) {
-					OrderItems ot = new OrderItems();
-					ot.setOrder_item_id(res2.getInt(1));
-					ot.setOrder_item_quantity(res2.getInt(2));
-					ot.setPrice_per_unit(res2.getString(3));
-					ot.setItem_status(res2.getInt(4));
-					ot.setTotal(res2.getString(5));
-					Product p = new Product();
-					p.setName(res2.getString(6));
-					p.setImage_path(res2.getString(7));
-					ot.setProduct_info(p);
-					odList.add(ot);				
-				}
-				res2.close();
-				preStmt2.close();
-				order.setOrder_items(odList);
-				preStmt2 = connection.prepareStatement(OrderQueryConstants.GET_OFFER_DETAILS_BYID);
-				preStmt2.setInt(1, order.getOrder_id());
-				res3 = preStmt2.executeQuery();
-				OfferHistoryData offer = new OfferHistoryData();
-				while (res3.next()) {
-					offer.setId(res3.getInt(1));
-					offer.setOffer_heading(res3.getString(2));
-					offer.setOffer_description(res3.getString(3));
-					offer.setOffer_percentage(res3.getString(4));
-					offer.setOffer_flat_amount(res3.getString(5));
-					offer.setOffer_type(res3.getString(6));
-					offer.setOffer_start_date(res3.getString(7));
-					offer.setOffer_valid(res3.getString(8));
-					offer.setActive(res3.getString(9));
-					offer.setStore_id(res3.getString(10));
-				order.setOffer_details(offer);	
-				}
-				res3.close();
-				preStmt2.close();
-				orderList.add(order);
-				
-			}
-
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getAllRetailerOrders " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				CommonUtils.closeDB(connection, res, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB getAllRetailerOrders " + e.getMessage());
-			}
-
-		}
-		return orderList;
-	}
-
-	@Override
-	public List<Order> getAllCustomerOrders(String customerId) {
-		Connection connection = null;
-		PreparedStatement preStmt = null;
-		ResultSet res = null;
-		PreparedStatement preStmt2 = null;
-		ResultSet res2 = null;
-		ResultSet res3 = null;
-		PaymentResponse pay = new PaymentResponse();
-		List<Order> orderList = new ArrayList<Order>();
-		try {
-			connection = jdbctemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(OrderQueryConstants.GET_CUSTOMER_ORDERS);
-			preStmt.setString(1, customerId);
-			res = preStmt.executeQuery();
-			while (res.next()) {
-				Order order = new Order();
-				order.setOrder_id(res.getInt(1));
-				order.setOrder_message(res.getString(2));
-				order.setOrder_placed_date(res.getString(3));
-				order.setOrder_updated_at(res.getString(4));
-				order.setCustomer_id(res.getInt(5));
-				order.setOrder_status(res.getInt(6));
-				order.setRetailer_id(res.getInt(7));
-				order.setOrder_total(res.getString(8));
-				order.setOrder_grand_total(res.getString(9));
-				PaymentResponse[] payArray = new Gson().fromJson(res.getString(10), PaymentResponse[].class); 
-				for(PaymentResponse pa : payArray) {
-					pay.setErrorCode(pa.getErrorCode());
-					pay.setMessage(pa.getMessage());
-					pay.setResponseCode(pa.getResponseCode());
-					pay.setResult(pa.getResult());
-					pay.setStatus(pa.getStatus());
-					}
 				order.setPayment_details(pay);
 				CustomerInfo customerInfo = new CustomerInfo();
 				customerInfo.setCustomer_name(res.getString(11));
@@ -380,196 +272,57 @@ public class OrderDaoImpl implements OrderDao {
 		return store;
 	}
 
-	@Override
-	public boolean placeOrder(OrderRequest orderReq) {
-		Connection connection = null;
 
-		int itemCount = 0;
-		int itemTableInsrt = 0;
-		boolean flag = false;
+	@Override
+	public void updateOrderDetails(int order_id, String order_total, String order_grand_total, String order_details) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
 		try {
 			connection = jdbctemp.getDataSource().getConnection();
-			//connection.setAutoCommit(false);
-			int orderId = insertOrderTable(connection,orderReq);
-			if(orderReq.getOffer_id()!=0)
-			{
-				insertOfferOrderTable(connection, orderReq.getOffer_id(), orderId);
-			}
-			if(orderId>0)
-			{
-				List<OrderItemsRequest> olist = orderReq.getOrder_items();
-				for (OrderItemsRequest orderItemsRequest : olist) {
-					itemTableInsrt = insertOrderItemTable(connection, orderReq, orderId,orderItemsRequest);
-					itemCount = itemCount+itemTableInsrt;
-				}
-				if(olist.size()==itemCount)
-				{
-					if(insertOrderDeliveryTable(connection, orderReq, orderId)>0)
-					{
-						flag = true;
-					}
-				}
-			}
-
+			preStmt = connection.prepareStatement(OrderQueryConstants.UPDATE_ORDER_DETAILS);
+			preStmt.setString(1, order_details);
+			preStmt.setString(2, order_total);
+			preStmt.setString(3, order_grand_total);
+			preStmt.setInt(4, order_id);
+			preStmt.executeUpdate();
+			
 		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getStoreDetails " + e.getMessage());
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE updateOrderDetails " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			try {
-//				if(flag)
-//				connection.commit();
-//				else
-//				connection.rollback();
-				
-				CommonUtils.closeDB(connection, null, null);
+				CommonUtils.closeDB(connection, null, preStmt);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB getStoreDetails " + e.getMessage());
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB updateOrderDetails " + e.getMessage());
 			}
 
 		}
-		return flag;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public int insertOrderTable(Connection connection,OrderRequest orderReq)
-	{
+	@Override
+	public void updateCancelledOrderDetails(int order_id,String order_details) {
+		Connection connection = null;
 		PreparedStatement preStmt = null;
-		int insert = 0;
-		ResultSet res = null;
-		int id = 0;
-		JSONArray ja = new JSONArray();
-		JSONObject jo = new JSONObject();
-		JSONObject rest = new JSONObject();
-		jo.put("message", "");
-		jo.put("status", 0);
-		jo.put("errorCode", "");
-		jo.put("result",rest );
-		jo.put("responseCode", orderReq.getPayment_details());
-		ja.add(jo);
 		try {
-			preStmt = connection.prepareStatement(OrderQueryConstants.INSERT_ORDER_TABLE,new String[] {"order_id"});
-			preStmt.setInt(1, orderReq.getCustomer_id());
-			preStmt.setInt(2, orderReq.getStore_id());
-			preStmt.setInt(3, HyperAppsConstants.ORDER_INITIATED);
-			preStmt.setDouble(4, orderReq.getOrder_total());
-			preStmt.setDouble(5, orderReq.getOrder_grand_total());
-			preStmt.setString(6, ja.toString());
-			insert = preStmt.executeUpdate();
-			if(insert > 0)
-			{
-				res = preStmt.getGeneratedKeys();
-				if(res.next())
-				{
-					id = res.getInt(1);
-				}
-			}
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(OrderQueryConstants.UPDATE_CANCELLED_ORDER_DETAILS);
+			preStmt.setString(1, order_details);
+			preStmt.setInt(2, order_id);
+			preStmt.executeUpdate();
+			
 		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE insertOrderTable " + e.getMessage());
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE updateCancelledOrderDetails " + e.getMessage());
 			e.printStackTrace();
-		} 
-		finally {
+		} finally {
 			try {
-				CommonUtils.closeDB(null, res, preStmt);
+				CommonUtils.closeDB(connection, null, preStmt);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB insertOrderTable " + e.getMessage());
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB updateCancelledOrderDetails " + e.getMessage());
 			}
 
 		}
-		return id;
 	}
-	public int insertOrderItemTable(Connection connection,OrderRequest orderReq,int OrderId,OrderItemsRequest oiReq)
-	{
-		PreparedStatement preStmt = null;
-		int insert = 0;
-		try {
-			preStmt = connection.prepareStatement(OrderQueryConstants.INSERT_ORDER_ITEMS_TABLE);
-			preStmt.setInt(1, OrderId);
-			preStmt.setInt(2, oiReq.getOrder_item_quantity());
-			preStmt.setDouble(3, oiReq.getPrice_per_unit());
-			preStmt.setInt(4, oiReq.getProduct_id());
-			preStmt.setInt(5, HyperAppsConstants.ORDER_INITIATED);
-			preStmt.setDouble(6, oiReq.getTotal());
-			insert = preStmt.executeUpdate();
-			
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE insertOrderItemTable " + e.getMessage());
-			e.printStackTrace();
-		} 
-		finally {
-			try {
-				CommonUtils.closeDB(null, null, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB insertOrderItemTable " + e.getMessage());
-			}
-
-		}
-		return insert;
-	}
-	@SuppressWarnings("unchecked")
-	public int insertOrderDeliveryTable(Connection connection,OrderRequest orderReq,int orderId)
-	{
-		PreparedStatement preStmt = null;
-		int insert = 0;
-		JSONArray ja = new JSONArray();
-		JSONObject jo = new JSONObject();
-		jo.put("name", orderReq.getLocation().getName());
-		jo.put("lat", orderReq.getLocation().getLat());
-		jo.put("lng", orderReq.getLocation().getLng());
-		ja.add(jo);
-		try {
-			
-			preStmt = connection.prepareStatement(OrderQueryConstants.INSERT_ORDER_DELIVERY_TABLE);
-			preStmt.setInt(1, 1);
-			preStmt.setString(2, ja.toString());
-			preStmt.setInt(3, orderId);
-			insert = preStmt.executeUpdate();
-			
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE insertOrderDeliveryTable " + e.getMessage());
-			e.printStackTrace();
-		} 
-		finally {
-			try {
-				CommonUtils.closeDB(null, null, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB insertOrderDeliveryTable " + e.getMessage());
-			}
-
-		}
-		return insert;
-	}
-
-	public int insertOfferOrderTable(Connection connection,int offerId,int orderId)
-	{
-		PreparedStatement preStmt = null;
-		int insert = 0;
-		
-		try {
-			
-			preStmt = connection.prepareStatement(OrderQueryConstants.INSERT_OFFER_ORDER);
-			preStmt.setInt(1, offerId);
-			preStmt.setInt(2, orderId);
-			insert = preStmt.executeUpdate();
-			
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE insertOfferOrderTable " + e.getMessage());
-			e.printStackTrace();
-		} 
-		finally {
-			try {
-				CommonUtils.closeDB(null, null, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB insertOfferOrderTable " + e.getMessage());
-			}
-
-		}
-		return insert;
-	}
-	
 		
 }

@@ -26,22 +26,6 @@ public class RetailerServiceImpl implements RetailerService {
 	
 	
 	@Override
-	public boolean updateStoreRunningStatus(int storeId, int running_status) {
-		return retailerDao.updateStoreRunningStatus(storeId,running_status);
-	}
-	
-	@Override
-	public boolean updateTaxInfo(int store_id, int tax_status, int tax_percentage, String tax_gst) {
-		return retailerDao.updateTaxInfo(store_id,tax_status,tax_percentage,tax_gst);
-	}
-
-
-	@Override
-	public Store getStoreBusinessTime(int storeId,Store store) {
-		return orderDao.getStoreDetails(storeId,store);
-	}
-
-	@Override
 	public User getUserDetails(String token) {
 		return retailerDao.getUserDetails(token);
 	}

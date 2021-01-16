@@ -57,28 +57,5 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 				business_short_desc,business_long_desc,store_category_ids,physical_store_status,
 				physical_store_address,business_phone,business_operating_mode,business_operating_timings,userImage,store_id);
 	}
-	@PostMapping("/api/retailer/store/running_status")
-	public Object updateRunningStatus(@RequestParam int store_id,@RequestParam int running_status) {
-		Logger.info(this.getClass(),"STORE RUNNING STATUS UPDATE API CALL STARTED AT "+dateFormat.format(new Date()));
-		return userBusiness.updateRunningStatus(store_id,running_status);
-		
-	}
-	@PostMapping("/api/retailer/profile/storeTaxStatus")
-	public Object updateRunningStatus(@RequestParam int tax_status,@RequestParam int tax_percentage,@RequestParam String tax_gst,@RequestParam int store_id) {
-		Logger.info(this.getClass(),"STORE RUNNING STATUS UPDATE API CALL STARTED AT "+dateFormat.format(new Date()));
-		return userBusiness.updateTaxInfo(store_id,tax_status,tax_percentage,tax_gst);
-		
-	}
-	@PostMapping("/api/retailer/profile/getbusinesstime")
-	public Object getStoreBusinesstime(@RequestParam int store_id) {
-		Logger.info(this.getClass(),"GET STORE BUSINESS TIME API CALL STARTED AT "+dateFormat.format(new Date()));
-		return userBusiness.getStoreBusinesstime(store_id);
-		
-	}
-	@PostMapping("/api/retailer/profile/updatebusinesstime")
-	public Object updateStoreBusinesstime(@RequestParam int tax_status,@RequestParam int tax_percentage,@RequestParam String tax_gst,@RequestParam int store_id) {
-		Logger.info(this.getClass(),"STORE RUNNING STATUS UPDATE API CALL STARTED AT "+dateFormat.format(new Date()));
-		return userBusiness.updateTaxInfo(store_id,tax_status,tax_percentage,tax_gst);
-		
-	}
+	
 }

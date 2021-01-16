@@ -32,7 +32,7 @@ public class RetailerValidationServiceImpl implements RetailerValidationService{
 	LoginService loginService;
 	
 	@Override
-	public ResponseEntity validateStoreId(int retailerId,ResponseEntity respEntity) {
+	public ResponseEntity<Object> validateStoreId(int retailerId,ResponseEntity<Object> respEntity) {
 		try {
 			if(!retailerDao.isStoreAvailable(retailerId))
 			{
@@ -42,7 +42,7 @@ public class RetailerValidationServiceImpl implements RetailerValidationService{
 				response.setError(HyperAppsConstants.RESPONSE_TRUE);
 				response.setData(null);
 				apiResponse.setResponse(response);
-				respEntity = new ResponseEntity<APIResponse>(apiResponse,HttpStatus.OK);
+				respEntity = new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
 			}
 			
 		} catch (Exception e) {
@@ -79,7 +79,7 @@ public class RetailerValidationServiceImpl implements RetailerValidationService{
 			User user = retailerDao.getParentUserDetails(userId);
 			if(user.getUser_id()!=0)
 			{
-				if(user.getIsOwner()!=1)
+				if(user.getIsOwner()==1)
 				{
 					if(user.getTeamMemberCount()>3)
 					{

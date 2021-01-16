@@ -8,7 +8,7 @@ import com.hyperapps.request.OrderRequest;
 @Service
 public interface RetailerValidationService {
 
-	public ResponseEntity validateStoreId(int retailerId,ResponseEntity respEntity);
+	public ResponseEntity<Object> validateStoreId(int retailerId,ResponseEntity<Object> respEntity);
 	
 	public ResponseEntity<Object> validateToken(String token,ResponseEntity<Object> respEntity);
 	
