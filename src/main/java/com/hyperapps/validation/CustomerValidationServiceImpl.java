@@ -1,23 +1,15 @@
 package com.hyperapps.validation;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import com.hyperapps.constants.HyperAppsConstants;
 import com.hyperapps.dao.CustomerDao;
-import com.hyperapps.dao.OrderDao;
 import com.hyperapps.logger.HyperAppsLogger;
-import com.hyperapps.model.BusinessOperatingTimings;
-import com.hyperapps.model.CommonResponse;
-import com.hyperapps.model.DeliveryAreas;
-import com.hyperapps.model.Order;
-import com.hyperapps.model.Store;
-import com.hyperapps.request.OrderRequest;
-import com.hyperapps.util.CalendarUtil;
+import com.hyperapps.model.APIResponse;
+import com.hyperapps.model.Response;
 
 @Component
 public class CustomerValidationServiceImpl implements CustomerValidationService{
@@ -29,7 +21,10 @@ public class CustomerValidationServiceImpl implements CustomerValidationService{
 	CustomerDao customeDao;
 	
 	@Autowired
-	CommonResponse commonResponse;
+	APIResponse apiResponse;
+	
+	@Autowired
+	Response response;
 	
 	@Override
 	public ResponseEntity validateCustomerId(int customerId,ResponseEntity respEntity) {
@@ -37,9 +32,12 @@ public class CustomerValidationServiceImpl implements CustomerValidationService{
 			if(!customeDao.isCustomerAvailable(customerId))
 			{
 				LOGGER.error(this.getClass(),"CUSTOMER NOT FOUND");
-				commonResponse.setStatus(HttpStatus.NOT_FOUND.toString());
-				commonResponse.setMessage("Customer not Found");
-				respEntity = new ResponseEntity<CommonResponse>(commonResponse,HttpStatus.OK);
+				response.setStatus(HttpStatus.NOT_FOUND.toString());
+				response.setMessage("Customer Not Found");
+				response.setError(HyperAppsConstants.RESPONSE_TRUE);
+				response.setData(null);
+				apiResponse.setResponse(response);
+				respEntity = new ResponseEntity<APIResponse>(apiResponse,HttpStatus.OK);
 			}
 			
 		} catch (Exception e) {
@@ -55,9 +53,12 @@ public class CustomerValidationServiceImpl implements CustomerValidationService{
 			if(!customeDao.isAddressAvailable(addressId))
 			{
 				LOGGER.error(this.getClass(),"ADDRESS NOT FOUND");
-				commonResponse.setStatus(HttpStatus.NOT_FOUND.toString());
-				commonResponse.setMessage("Address not Found");
-				respEntity = new ResponseEntity<CommonResponse>(commonResponse,HttpStatus.OK);
+				response.setStatus(HttpStatus.NOT_FOUND.toString());
+				response.setMessage("Address Not Found");
+				response.setError(HyperAppsConstants.RESPONSE_TRUE);
+				response.setData(null);
+				apiResponse.setResponse(response);
+				respEntity = new ResponseEntity<APIResponse>(apiResponse,HttpStatus.OK);
 			}
 			
 		} catch (Exception e) {

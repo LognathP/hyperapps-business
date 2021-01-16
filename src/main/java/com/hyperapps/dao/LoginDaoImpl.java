@@ -4,9 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.hyperapps.constants.LoginQueryConstants;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.Login;
+import com.hyperapps.util.CommonUtils;
 
 
 @Component
@@ -48,8 +46,7 @@ public class LoginDaoImpl implements LoginDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				preStmt.close();
-				connection.close();
+				CommonUtils.closeDB(connection, res, preStmt);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB ON checkUser " + e.getMessage());
@@ -81,8 +78,7 @@ public class LoginDaoImpl implements LoginDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				preStmt.close();
-				connection.close();
+				CommonUtils.closeDB(connection, res, preStmt);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB isNewUser " + e.getMessage());
@@ -110,8 +106,7 @@ public class LoginDaoImpl implements LoginDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				preStmt.close();
-				connection.close();
+				CommonUtils.closeDB(connection, null, preStmt);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB isNewUser " + e.getMessage());
@@ -121,5 +116,126 @@ public class LoginDaoImpl implements LoginDao {
 		
 	}
 	
+	@Override
+	public void updateLoginToken(Login login) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(LoginQueryConstants.UPDATE_USER_LOGIN_TOKEN);
+			preStmt.setString(1, login.getLoginToken());
+			preStmt.setString(2, login.getUserId());
+			if (preStmt.executeUpdate()>0) {
+				LOGGER.info(this.getClass(), "LOGIN TOKEN UPDATED SUCCESSFULLY");
+			}
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE isNewUser " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, null, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB isNewUser " + e.getMessage());
+			}
+
+		}
+		
+	}
+	
+	@Override
+	public boolean validateLoginToken(int userId,String token) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		ResultSet res = null;
+		boolean stat = false;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(LoginQueryConstants.CHECK_USER_TOKEN);
+			preStmt.setString(1, token);
+			preStmt.setInt(2, userId);
+			res = preStmt.executeQuery();
+			if (res.next()) {
+				if(res.getInt(1)>0)
+				stat = true;
+			}
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE validateLoginToken " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, res, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB validateLoginToken " + e.getMessage());
+			}
+
+		}
+		return stat;
+	}
+	
+	@Override
+	public boolean userIdValidation(int userId) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		ResultSet res = null;
+		boolean stat = false;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(LoginQueryConstants.CHECK_USER_ID);
+			preStmt.setInt(1, userId);
+			res = preStmt.executeQuery();
+			if (res.next()) {
+				if(res.getInt(1)>0)
+				stat = true;
+			}
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE userIdValidation " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, res, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB ON userIdValidation " + e.getMessage());
+			}
+
+		}
+		return stat;
+	}
+	
+	@Override
+	public boolean validateToken(String token) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		ResultSet res = null;
+		boolean stat = false;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(LoginQueryConstants.CHECK_TOKEN);
+			preStmt.setString(1, token);
+			res = preStmt.executeQuery();
+			if (res.next()) {
+				if(res.getInt(1)>0)
+				stat = true;
+			}
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE validateToken " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, res, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB validateToken " + e.getMessage());
+			}
+
+		}
+		return stat;
+	}
 	
 }

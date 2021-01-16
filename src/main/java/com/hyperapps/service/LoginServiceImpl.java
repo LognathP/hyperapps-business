@@ -1,17 +1,11 @@
 package com.hyperapps.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.hyperapps.dao.LoginDao;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.Login;
-import com.hyperapps.model.User;
-import com.hyperapps.repository.UserRepository;
 
 @Component
 public class LoginServiceImpl implements LoginService {
@@ -59,7 +53,26 @@ public class LoginServiceImpl implements LoginService {
 		}
 	}
 	
+	@Override
+	public void updateLoginToken(Login login) {
+		loginDao.updateLoginToken(login);
+	}
+
+
+	@Override
+	public boolean validateLoginToken(int userId,String token) {
+		return loginDao.validateLoginToken(userId,token);
+	}
 	
+	@Override
+	public boolean userIdValidation(int userId) {
+		return loginDao.userIdValidation(userId);
+	}
+
+	@Override
+	public boolean validateToken(String token) {
+		return loginDao.validateToken(token);
+	}
 
 
 	

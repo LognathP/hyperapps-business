@@ -18,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.hyperapps.logger.ConfigProperties;
-import com.hyperapps.model.BusinessPhone;
 import com.hyperapps.model.DeliveryInfo;
 import com.hyperapps.model.Store;
 import com.hyperapps.util.DESEncryptor;
@@ -114,25 +113,27 @@ public class Test {
 //	   
 //	    System.out.println(new SimpleDateFormat("ddMMyyyyHHmmss").format(new Date()));  
 	   
-		JSONArray ja = new JSONArray();
-		JSONObject jo = new JSONObject();
-		JSONObject rest = new JSONObject();
-		jo.put("message", "");
-		jo.put("status", 0);
-		jo.put("errorCode", "");
-		jo.put("result",rest );
-		jo.put("responseCode", "");
-		ja.add(jo);
-		System.out.println(ja.toString());
+//		JSONArray ja = new JSONArray();
+//		JSONObject jo = new JSONObject();
+//		JSONObject rest = new JSONObject();
+//		jo.put("message", "");
+//		jo.put("status", 0);
+//		jo.put("errorCode", "");
+//		jo.put("result",rest );
+//		jo.put("responseCode", "");
+//		ja.add(jo);
+//		System.out.println(ja.toString());
+//		
+//		System.out.println(Double.parseDouble("90.00"));
+//		
+//	LinkedList<Integer> l = new LinkedList<>();
+//	l.add(5);
+//	l.add(1);
+//	String m = "Hello World!";
+//	String h = m.substring(6,12) + m.substring(12,6);
+//	System.out.println(h);
 		
-		System.out.println(Double.parseDouble("90.00"));
-		
-	LinkedList<Integer> l = new LinkedList<>();
-	l.add(5);
-	l.add(1);
-	String m = "Hello World!";
-	String h = m.substring(6,12) + m.substring(12,6);
-	System.out.println(h);
+		System.out.println("loganathan".substring(0,4));
 
 	}
 }

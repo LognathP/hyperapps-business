@@ -20,9 +20,6 @@ import com.hyperapps.constants.LoginQueryConstants;
 import com.hyperapps.constants.OrderQueryConstants;
 import com.hyperapps.constants.StoreQueryConstants;
 import com.hyperapps.logger.HyperAppsLogger;
-import com.hyperapps.model.BusinessOperatingTimings;
-import com.hyperapps.model.BusinessPhone;
-import com.hyperapps.model.CommonData;
 import com.hyperapps.model.CustomerInfo;
 import com.hyperapps.model.DeliveryAreas;
 import com.hyperapps.model.DeliveryInfo;
@@ -32,6 +29,8 @@ import com.hyperapps.model.Order;
 import com.hyperapps.model.OrderItems;
 import com.hyperapps.model.PaymentResponse;
 import com.hyperapps.model.Product;
+import com.hyperapps.model.Profile.Business_operating_timings;
+import com.hyperapps.model.Profile.Business_phone;
 import com.hyperapps.model.Store;
 import com.hyperapps.request.OrderItemsRequest;
 import com.hyperapps.request.OrderRequest;
@@ -46,9 +45,6 @@ public class OrderDaoImpl implements OrderDao {
 	
 	@Autowired
 	JdbcTemplate jdbctemp;
-	
-	@Autowired
-	CommonData commonData;
 	
 	@Override
 	public List<Order> getAllRetailerOrders(String storeId) {
@@ -206,11 +202,11 @@ public class OrderDaoImpl implements OrderDao {
 				Store store = new Store();
 				store.setBusiness_name(res.getString(19));
 				store.setPhysical_store_address(res.getString(20));
-				List<BusinessPhone> bpList = new ArrayList<BusinessPhone>();
+				List<Business_phone> bpList = new ArrayList<Business_phone>();
 				Gson gson = new Gson(); 
-				BusinessPhone[] userArray = gson.fromJson(res.getString(21), BusinessPhone[].class); 
-				for(BusinessPhone bp : userArray) {
-					BusinessPhone bPhone = new BusinessPhone();
+				Business_phone[] userArray = gson.fromJson(res.getString(21), Business_phone[].class); 
+				for(Business_phone bp : userArray) {
+					Business_phone bPhone = new Business_phone();
 					bPhone.setPhone(bp.getPhone());	
 					bpList.add(bPhone);
 				}
@@ -338,7 +334,7 @@ public class OrderDaoImpl implements OrderDao {
 		PreparedStatement preStmt = null;
 		ResultSet res = null;
 		List<DeliveryAreas> dfList = new ArrayList<DeliveryAreas>();
-		List<BusinessOperatingTimings> bsList = new ArrayList<BusinessOperatingTimings>();
+		List<Business_operating_timings> bsList = new ArrayList<Business_operating_timings>();
 		try {
 			connection = jdbctemp.getDataSource().getConnection();
 			preStmt = connection.prepareStatement(StoreQueryConstants.GET_STORE_LOC_TIME_QUERY);
@@ -355,9 +351,9 @@ public class OrderDaoImpl implements OrderDao {
 					dfList.add(deliverInfo);
 				}
 				gson = new Gson();
-				BusinessOperatingTimings[] userArray2 = gson.fromJson(res.getString(2), BusinessOperatingTimings[].class); 
-				for(BusinessOperatingTimings df : userArray2) {
-					BusinessOperatingTimings bsTime = new BusinessOperatingTimings();
+				Business_operating_timings[] userArray2 = gson.fromJson(res.getString(2), Business_operating_timings[].class); 
+				for(Business_operating_timings df : userArray2) {
+					Business_operating_timings bsTime = new Business_operating_timings();
 					bsTime.setDay(df.getDay());
 					bsTime.setFrom(df.getFrom());
 					bsTime.setTo(df.getTo());
@@ -395,7 +391,6 @@ public class OrderDaoImpl implements OrderDao {
 			connection = jdbctemp.getDataSource().getConnection();
 			//connection.setAutoCommit(false);
 			int orderId = insertOrderTable(connection,orderReq);
-			commonData.setOrderId(orderId);
 			if(orderReq.getOffer_id()!=0)
 			{
 				insertOfferOrderTable(connection, orderReq.getOffer_id(), orderId);

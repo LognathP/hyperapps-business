@@ -9,31 +9,23 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.hyperapps.constants.CustomerQueryConstants;
-import com.hyperapps.constants.HyperAppsConstants;
-import com.hyperapps.constants.LoginQueryConstants;
-import com.hyperapps.constants.OrderQueryConstants;
 import com.hyperapps.logger.HyperAppsLogger;
-import com.hyperapps.model.BusinessOperatingTimings;
-import com.hyperapps.model.BusinessPhone;
 import com.hyperapps.model.Categories;
 import com.hyperapps.model.CategoryTree;
 import com.hyperapps.model.Child_category;
-import com.hyperapps.model.CommonData;
 import com.hyperapps.model.Customer;
 import com.hyperapps.model.CustomerAddress;
 import com.hyperapps.model.UserProfile;
 import com.hyperapps.model.DeliveryAreas;
-import com.hyperapps.model.DeliveryInfo;
-import com.hyperapps.model.Login;
 import com.hyperapps.model.OfferHistoryData;
 import com.hyperapps.model.Product;
+import com.hyperapps.model.Profile.Business_operating_timings;
+import com.hyperapps.model.Profile.Business_phone;
 import com.hyperapps.model.PromotionData;
 import com.hyperapps.model.SliderImagesData;
 import com.hyperapps.model.Store;
@@ -477,8 +469,8 @@ public class CustomerDaoImpl implements CustomerDao {
 		PreparedStatement preStmt = null;
 		ResultSet res = null;
 		List<DeliveryAreas> daList = new ArrayList<>();
-		List<BusinessPhone> bpList = new ArrayList<>();
-		List<BusinessOperatingTimings> boList = new ArrayList<>();
+		List<Business_phone> bpList = new ArrayList<>();
+		List<Business_operating_timings> boList = new ArrayList<>();
 		Store store = new Store();
 		try {
 			connection = jdbctemp.getDataSource().getConnection();
@@ -508,16 +500,16 @@ public class CustomerDaoImpl implements CustomerDao {
 						store.setRunning_status(res.getInt("status"));
 						store.setPhysical_store_status(res.getInt("physical_store_status"));
 						store.setPhysical_store_address(res.getString("physical_store_address"));
-						BusinessPhone[] phoneArray = new Gson().fromJson(res.getString("business_phone"), BusinessPhone[].class); 
-						for(BusinessPhone bp : phoneArray) {
-							BusinessPhone bph = new BusinessPhone();
+						Business_phone[] phoneArray = new Gson().fromJson(res.getString("business_phone"), Business_phone[].class); 
+						for(Business_phone bp : phoneArray) {
+							Business_phone bph = new Business_phone();
 							bph.setPhone(bp.getPhone());
 							bpList.add(bph);
 						}
 						store.setBusiness_operating_mode(res.getInt("business_operating_mode"));
-						BusinessOperatingTimings[] operationArray = new Gson().fromJson(res.getString("business_operating_timings"), BusinessOperatingTimings[].class); 
-						for(BusinessOperatingTimings bop : operationArray) {
-							BusinessOperatingTimings bopt = new BusinessOperatingTimings();
+						Business_operating_timings[] operationArray = new Gson().fromJson(res.getString("business_operating_timings"), Business_operating_timings[].class); 
+						for(Business_operating_timings bop : operationArray) {
+							Business_operating_timings bopt = new Business_operating_timings();
 							bopt.setDay(bop.getDay());
 							bopt.setFrom(bop.getFrom());
 							bopt.setTo(bop.getTo());
@@ -944,5 +936,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 		return ohl;
 	}
+
 	
+
 }

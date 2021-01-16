@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hyperapps.model.Profile.Business_operating_timings;
+import com.hyperapps.model.Profile.Business_phone;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -43,13 +45,13 @@ public class Store{
     public String physical_store_address;
     @Qualifier("business_phone")
     @JsonProperty("business_phone")
-    public List<BusinessPhone> business_phone;
+    public List<Business_phone> business_phone;
     @Qualifier("business_operating_mode")
     @JsonProperty("business_operating_mode")
     public int business_operating_mode;
     @Qualifier("business_operating_timings")
     @JsonProperty("business_operating_timings")
-    public List<BusinessOperatingTimings> business_operating_timings;
+    public List<Business_operating_timings> business_operating_timings;
     @Qualifier("delivery_areas")
     @JsonProperty("delivery_areas")
     public List<DeliveryAreas> delivery_areas;

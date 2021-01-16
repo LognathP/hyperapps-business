@@ -2,22 +2,22 @@ package com.hyperapps.business;
 
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import com.hyperapps.constants.HyperAppsConstants;
 import com.hyperapps.logger.ConfigProperties;
 import com.hyperapps.logger.HyperAppsLogger;
-import com.hyperapps.model.BusinessOperatingTimings;
-import com.hyperapps.model.CommonDataResponse;
-import com.hyperapps.model.CommonResponse;
-import com.hyperapps.model.CommonSingleResponse;
+import com.hyperapps.model.APIResponse;
+import com.hyperapps.model.Profile;
+import com.hyperapps.model.Profile.Business_operating_timings;
+import com.hyperapps.model.Response;
 import com.hyperapps.model.Store;
-import com.hyperapps.model.User;
-import com.hyperapps.service.UserService;
+import com.hyperapps.request.ProfileUpdateRequest;
+import com.hyperapps.service.LoginService;
+import com.hyperapps.service.RetailerService;
 import com.hyperapps.validation.RetailerValidationService;
 
 @Component
@@ -30,132 +30,41 @@ public class UserBusiness {
 	ConfigProperties configProp;
 	
 	@Autowired
-	UserService userTypeService;
-	
-	@Autowired
-	CommonResponse commonResponse;
+	RetailerService userService;
 	
 	@Autowired
 	RetailerValidationService retailerValidationService;
 	
 	@Autowired
-	CommonDataResponse commonDataResponse;
+	APIResponse apiResponse;
 	
 	@Autowired
-	CommonSingleResponse commonSingleResponse;
+	Response response;
+	
+	@Autowired
+	LoginService loginService;
 	
 	
-	public ResponseEntity<CommonResponse> addUser(User userType)
-	{
-		LOGGER.info(this.getClass(),"USER TYPE ADD BUSINESS LAYER");
-		if(userTypeService.addUserType(userType))
-		{
-			LOGGER.info(this.getClass(),"USER TYPE ADDED SUCCESSFULLY");
-			commonResponse.setStatus(HttpStatus.OK.toString());
-			commonResponse.setMessage("User Type added");
-			return new ResponseEntity<CommonResponse>(commonResponse,HttpStatus.OK);
-		}
-		else
-		{
-			LOGGER.error(this.getClass(),"USER TYPE ADD FAILED");
-			commonResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-			commonResponse.setMessage("Error occured, Please try Again");
-			return new ResponseEntity<CommonResponse>(commonResponse,HttpStatus.OK);	
-		}
-	}
-	public ResponseEntity<CommonResponse> editUser(User userType)
-	{
-		LOGGER.info(this.getClass(),"USER TYPE EDIT BUSINESS LAYER");
-		if(userTypeService.addUserType(userType))
-		{
-			LOGGER.info(this.getClass(),"USER TYPE UPDATED SUCCESSFULLY");
-			commonResponse.setStatus(HttpStatus.OK.toString());
-			commonResponse.setMessage("User Type updated");
-			return new ResponseEntity<CommonResponse>(commonResponse,HttpStatus.OK);
-		}
-		else
-		{
-			LOGGER.error(this.getClass(),"USER TYPE EDIT FAILED");
-			commonResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-			commonResponse.setMessage("Error occured, Please try Again");
-			return new ResponseEntity<CommonResponse>(commonResponse,HttpStatus.OK);	
-		}
-	}
-	public ResponseEntity<CommonSingleResponse> getUser(User userType)
-	{
-		LOGGER.info(this.getClass(),"USER TYPE GET BUSINESS LAYER");
-		Optional<User> userTyp = userTypeService.getUserType(userType);
-		if(userTyp.isPresent())
-		{
-			LOGGER.info(this.getClass(),"USER TYPE RETRIEVED SUCCESSFULLY");
-			commonSingleResponse.setStatus(HttpStatus.OK.toString());
-			commonSingleResponse.setMessage("User Type Retrieved");
-			userType = userTyp.get();
-			commonSingleResponse.setData(userType);
-			return new ResponseEntity<CommonSingleResponse>(commonSingleResponse,HttpStatus.OK);
-		}
-		else
-		{
-			LOGGER.error(this.getClass(),"USER TYPE RETRIEVAL FAILED");
-			commonSingleResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-			commonSingleResponse.setMessage("Error occured, Please try Again");
-			return new ResponseEntity<CommonSingleResponse>(commonSingleResponse,HttpStatus.OK);	
-		}
-	}
-	public ResponseEntity<CommonResponse> deleteUser(User userType)
-	{
-		LOGGER.info(this.getClass(),"USER TYPE DELETE BUSINESS LAYER");
-		if(userTypeService.deleteUserType(userType))
-		{
-			LOGGER.info(this.getClass(),"USER TYPE DELETED SUCCESSFULLY");
-			commonResponse.setStatus(HttpStatus.OK.toString());
-			commonResponse.setMessage("User Type deleted");
-			return new ResponseEntity<CommonResponse>(commonResponse,HttpStatus.OK);
-		}
-		else
-		{
-			LOGGER.error(this.getClass(),"USER TYPE DELETE FAILED");
-			commonResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-			commonResponse.setMessage("Error occured, Please try Again");
-			return new ResponseEntity<CommonResponse>(commonResponse,HttpStatus.OK);	
-		}
-	}
-	public ResponseEntity<CommonDataResponse> getAllUserType()
-	{
-		LOGGER.info(this.getClass(),"USER TYPE RETRIEVE BUSINESS LAYER");
-		List<User> userTypeList = userTypeService.getAllUserType();
-		if(!userTypeList.isEmpty())
-		{
-			LOGGER.info(this.getClass(),"USER TYPE RETRIVED SUCCESSFULLY");
-			commonDataResponse.setStatus(HttpStatus.OK.toString());
-			commonDataResponse.setMessage("User Type listed");
-			commonDataResponse.setData(userTypeList);
-			return new ResponseEntity<CommonDataResponse>(commonDataResponse,HttpStatus.OK);
-		}
-		else
-		{
-			LOGGER.error(this.getClass(),"USER TYPE RETRIEVAL FAILED");
-			commonResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-			commonResponse.setMessage("Error occured, Please try Again");
-			return new ResponseEntity<CommonDataResponse>(commonDataResponse,HttpStatus.OK);		
-		}
-		
-		
-		
-	}
+	
 	public Object updateRunningStatus(int store_id,int running_status) {
 		ResponseEntity<?> respEntity = null;
 		if ((respEntity = retailerValidationService.validateStoreId(store_id, respEntity)) == null) {
-			if (userTypeService.updateStoreRunningStatus(store_id,running_status)) {
+			if (userService.updateStoreRunningStatus(store_id,running_status)) {
 				LOGGER.info(this.getClass(), "STORE RUNNING STATUS UPDATED SUCCESSFULLY");
-				commonResponse.setStatus(HttpStatus.OK.toString());
-				commonResponse.setMessage("Store Running status Updated Successfully");
-				respEntity = new ResponseEntity<CommonResponse>(commonResponse, HttpStatus.OK);
+				response.setStatus(HttpStatus.OK.toString());
+				response.setMessage("Store Running status Updated Successfully");
+				response.setError(HyperAppsConstants.RESPONSE_FALSE);
+				response.setData(null);
+				apiResponse.setResponse(response);
+				respEntity = new ResponseEntity<APIResponse>(apiResponse, HttpStatus.OK);
 			} else {
 				LOGGER.error(this.getClass(), "UNABLE TO UPDATE CUSTOMER DETAILS");
-				commonResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-				commonResponse.setMessage("Unable to update Store Running status");
-				respEntity = new ResponseEntity<CommonResponse>(commonResponse, HttpStatus.OK);
+				response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				response.setMessage("Unable to update Store Running status");
+				response.setError(HyperAppsConstants.RESPONSE_TRUE);
+				response.setData(null);
+				apiResponse.setResponse(response);
+				respEntity = new ResponseEntity<APIResponse>(apiResponse, HttpStatus.OK);
 			}
 			}
 		return respEntity;
@@ -163,16 +72,22 @@ public class UserBusiness {
 	public Object updateTaxInfo(int store_id, int tax_status, int tax_percentage, String tax_gst) {
 		ResponseEntity<?> respEntity = null;
 		if ((respEntity = retailerValidationService.validateStoreId(store_id, respEntity)) == null) {
-			if (userTypeService.updateTaxInfo(store_id,tax_status,tax_percentage,tax_gst)) {
+			if (userService.updateTaxInfo(store_id,tax_status,tax_percentage,tax_gst)) {
 				LOGGER.info(this.getClass(), "STORE TAX INFO UPDATED SUCCESSFULLY");
-				commonResponse.setStatus(HttpStatus.OK.toString());
-				commonResponse.setMessage("Store Tax info Updated Successfully");
-				respEntity = new ResponseEntity<CommonResponse>(commonResponse, HttpStatus.OK);
+				response.setStatus(HttpStatus.OK.toString());
+				response.setMessage("Store Tax info Updated Successfully");
+				response.setError(HyperAppsConstants.RESPONSE_FALSE);
+				response.setData(null);
+				apiResponse.setResponse(response);
+				respEntity = new ResponseEntity<APIResponse>(apiResponse, HttpStatus.OK);
 			} else {
 				LOGGER.error(this.getClass(), "UNABLE TO UPDATE TAX INFO");
-				commonResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-				commonResponse.setMessage("Unable to update Tax Info");
-				respEntity = new ResponseEntity<CommonResponse>(commonResponse, HttpStatus.OK);
+				response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				response.setMessage("Unable to update Tax Info");
+				response.setError(HyperAppsConstants.RESPONSE_TRUE);
+				response.setData(null);
+				apiResponse.setResponse(response);
+				respEntity = new ResponseEntity<APIResponse>(apiResponse, HttpStatus.OK);
 			}
 			}
 		return respEntity;
@@ -181,24 +96,166 @@ public class UserBusiness {
 		ResponseEntity<?> respEntity = null;
 		Store store = new Store();
 		if ((respEntity = retailerValidationService.validateStoreId(store_id, respEntity)) == null) {
-			List<BusinessOperatingTimings> botList = userTypeService.getStoreBusinessTime(store_id,store).getBusiness_operating_timings();
+			List<Business_operating_timings> botList = userService.getStoreBusinessTime(store_id,store).getBusiness_operating_timings();
 			if(!botList.isEmpty())
 			{
 				LOGGER.info(this.getClass(),"STORE BUSINESS TIME RETRIVED SUCCESSFULLY");
-				commonDataResponse.setStatus(HttpStatus.OK.toString());
-				commonDataResponse.setMessage("Store Business Time listed");
-				commonDataResponse.setData(botList);
-				return new ResponseEntity<CommonDataResponse>(commonDataResponse,HttpStatus.OK);
+				response.setStatus(HttpStatus.OK.toString());
+				response.setMessage("Store Business Time listed Successfully");
+				response.setError(HyperAppsConstants.RESPONSE_FALSE);
+				response.setData(botList);
+				apiResponse.setResponse(response);
+				respEntity = new ResponseEntity<APIResponse>(apiResponse, HttpStatus.OK);
 			}
 			else
 			{
 				LOGGER.error(this.getClass(),"STORE BUSINESS TIME RETRIEVAL FAILED");
-				commonResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-				commonResponse.setMessage("Error occured, Please try Again");
-				return new ResponseEntity<CommonDataResponse>(commonDataResponse,HttpStatus.OK);		
+				response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				response.setMessage("Unable to List Store Business Time");
+				response.setError(HyperAppsConstants.RESPONSE_TRUE);
+				response.setData(null);
+				apiResponse.setResponse(response);
+				respEntity = new ResponseEntity<APIResponse>(apiResponse, HttpStatus.OK);	
 			}
 			
 			}
 		return respEntity;
 	}
+	public Object getProfile(int userId, String token) {
+		if(loginService.validateLoginToken(userId,token))
+		{
+			if(loginService.userIdValidation(userId))
+			{
+				List<Profile> profile = userService.getProfileDetails(userId);
+				if (profile.size()!=0) {
+					LOGGER.info(this.getClass(), "USER DETAILS LISTED SUCCESSFULLY");
+					response.setStatus(HttpStatus.OK.toString());
+					response.setMessage("User Details Listed Successfully");
+					response.setData(profile);
+					response.setError(HyperAppsConstants.RESPONSE_FALSE);
+					apiResponse.setResponse(response);
+					return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
+				} else {
+					LOGGER.error(this.getClass(), "USER DETAILS NOT FOUND");
+					response.setStatus(HttpStatus.NOT_FOUND.toString());
+					response.setMessage("User Details Not found");
+					response.setError(HyperAppsConstants.RESPONSE_TRUE);
+					response.setData(null);
+					apiResponse.setResponse(response);
+					return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
+				}
+			}
+			else
+			{
+				LOGGER.error(this.getClass(), "USER NOT FOUND");
+				response.setStatus(HttpStatus.FORBIDDEN.toString());
+				response.setMessage("User Not found");
+				response.setError(HyperAppsConstants.RESPONSE_TRUE);
+				response.setData(null);
+				apiResponse.setResponse(response);
+				return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
+			}
+			
+		}
+		else
+		{
+			LOGGER.error(this.getClass(), "INVALID TOKEN");
+			response.setStatus(HttpStatus.FORBIDDEN.toString());
+			response.setMessage("Invalid Token");
+			response.setError(HyperAppsConstants.RESPONSE_TRUE);
+			response.setData(null);
+			apiResponse.setResponse(response);
+			return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
+		}
+	}
+	public Object updateUserProfile(int user_Id, String token, String userId, String business_name,
+			String business_short_desc, String business_long_desc, String store_category_ids, int physical_store_status,
+			String physical_store_address, String business_phone, int business_operating_mode,
+			String business_operating_timings, int store_id) {
+		ProfileUpdateRequest prof = new ProfileUpdateRequest();
+		prof.setUser_id(user_Id);
+		prof.setBusiness_name(business_name);
+		prof.setBusiness_short_desc(business_short_desc);
+		prof.setBusiness_long_desc(business_long_desc);
+		prof.setPhysical_store_status(physical_store_status);
+		prof.setPhysical_store_address(physical_store_address);
+		prof.setBusiness_operating_mode(business_operating_mode);
+		prof.setBusiness_operating_timings(business_operating_timings);
+		prof.setBusiness_phone(business_phone);
+		prof.setStore_category_ids(store_category_ids);
+		prof.setId(store_id);
+		if (loginService.validateLoginToken(user_Id,token)) {
+			if (userService.updateUserProfile(prof,0)) {
+				LOGGER.info(this.getClass(), "USER PROFILE UPDATED SUCCESSFULLY");
+				response.setStatus(HttpStatus.OK.toString());
+				response.setMessage("User Profile Updated Successfully");
+				response.setError(HyperAppsConstants.RESPONSE_FALSE);
+				apiResponse.setResponse(response);
+				return new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+			} else {
+				LOGGER.error(this.getClass(), "UNABLE TO UPDATE USER DETAILS");
+				response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				response.setMessage("Unable to updated User Details");
+				response.setError(HyperAppsConstants.RESPONSE_TRUE);
+				apiResponse.setResponse(response);
+				return new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+			}
+		} else {
+			LOGGER.error(this.getClass(), "INVALID TOKEN");
+			response.setStatus(HttpStatus.FORBIDDEN.toString());
+			response.setMessage("Invalid Token");
+			response.setError(HyperAppsConstants.RESPONSE_TRUE);
+			response.setData(null);
+			apiResponse.setResponse(response);
+			return new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+		}
+		
+	}
+	
+	public Object updateUserProfileImage(int user_Id, String token, String userId, String business_name,
+			String business_short_desc, String business_long_desc, String store_category_ids, int physical_store_status,
+			String physical_store_address, String business_phone, int business_operating_mode,
+			String business_operating_timings,String userImage,int store_id) {
+		ProfileUpdateRequest prof = new ProfileUpdateRequest();
+		prof.setUser_id(user_Id);
+		prof.setBusiness_name(business_name);
+		prof.setBusiness_short_desc(business_short_desc);
+		prof.setBusiness_long_desc(business_long_desc);
+		prof.setPhysical_store_status(physical_store_status);
+		prof.setPhysical_store_address(physical_store_address);
+		prof.setBusiness_operating_mode(business_operating_mode);
+		prof.setBusiness_operating_timings(business_operating_timings);
+		prof.setBusiness_phone(business_phone);
+		prof.setStore_category_ids(store_category_ids);
+		prof.setId(store_id);
+		prof.setUserImage(userImage);
+		if (loginService.validateLoginToken(user_Id,token)) {
+			if (userService.updateUserProfile(prof,1)) {
+				LOGGER.info(this.getClass(), "USER PROFILE UPDATED SUCCESSFULLY");
+				response.setStatus(HttpStatus.OK.toString());
+				response.setMessage("User Profile Updated Successfully");
+				response.setError(HyperAppsConstants.RESPONSE_FALSE);
+				apiResponse.setResponse(response);
+				return new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+			} else {
+				LOGGER.error(this.getClass(), "UNABLE TO UPDATE USER DETAILS");
+				response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				response.setMessage("Unable to updated User Details");
+				response.setError(HyperAppsConstants.RESPONSE_TRUE);
+				apiResponse.setResponse(response);
+				return new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+			}
+		} else {
+			LOGGER.error(this.getClass(), "INVALID TOKEN");
+			response.setStatus(HttpStatus.FORBIDDEN.toString());
+			response.setMessage("Invalid Token");
+			response.setError(HyperAppsConstants.RESPONSE_TRUE);
+			response.setData(null);
+			apiResponse.setResponse(response);
+			return new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+		}
+		
+	}
+	
+	
 }

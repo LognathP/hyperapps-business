@@ -22,4 +22,5 @@ public class Login {
 	boolean isLoginSuccess;
 	String userStatus;
 	boolean isUserCreated;
+	String loginToken;
 }

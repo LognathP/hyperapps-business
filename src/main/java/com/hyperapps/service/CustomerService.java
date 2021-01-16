@@ -57,4 +57,6 @@ public interface CustomerService {
 	public List<Child_category> getCategoryDetails(int store_id, int paranetCatgoryId, int subCategoryId);
 
 	public List<OfferHistoryData> getOnGoingOfferDetails(int store_id, int customerId);
+
+	
 }

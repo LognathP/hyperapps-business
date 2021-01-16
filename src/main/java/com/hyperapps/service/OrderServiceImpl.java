@@ -1,24 +1,13 @@
 package com.hyperapps.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.hyperapps.dao.CustomerDao;
-import com.hyperapps.dao.LoginDao;
 import com.hyperapps.dao.OrderDao;
 import com.hyperapps.logger.HyperAppsLogger;
-import com.hyperapps.model.Customer;
-import com.hyperapps.model.Login;
-import com.hyperapps.model.OfferHistoryData;
 import com.hyperapps.model.Order;
 import com.hyperapps.model.Store;
-import com.hyperapps.model.User;
-import com.hyperapps.repository.CustomerRepository;
-import com.hyperapps.repository.UserRepository;
 import com.hyperapps.request.OrderRequest;
 
 @Component

@@ -1,33 +1,24 @@
 package com.hyperapps.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hyperapps.dao.CustomerDao;
-import com.hyperapps.dao.LoginDao;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.Categories;
 import com.hyperapps.model.CategoryTree;
 import com.hyperapps.model.Child_category;
-import com.hyperapps.model.CommonData;
 import com.hyperapps.model.Customer;
 import com.hyperapps.model.CustomerAddress;
 import com.hyperapps.model.UserProfile;
-import com.hyperapps.model.DeliveryAreas;
-import com.hyperapps.model.Login;
 import com.hyperapps.model.OfferHistoryData;
 import com.hyperapps.model.Product;
 import com.hyperapps.model.PromotionData;
 import com.hyperapps.model.SliderImagesData;
 import com.hyperapps.model.Store;
-import com.hyperapps.model.User;
 import com.hyperapps.repository.CustomerRepository;
-import com.hyperapps.repository.UserRepository;
 import com.hyperapps.request.AddAddressRequest;
 
 @Component
@@ -41,10 +32,6 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Autowired
 	CustomerRepository customerRepository;
-	
-	@Autowired
-	CommonData commonData;
-	
 	
 	@Override
 	public Customer checkCustomer(Customer customer) {
@@ -170,6 +157,7 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDao.getOnGoingOfferDetails(storeId,customerId);
 	}
 
+	
 
 	
 

@@ -15,5 +15,13 @@ public interface LoginDao {
 	public Login isNewUser(Login login);
 
 	public void updateDeviceToken(Login login);
+
+	public void updateLoginToken(Login login);
+
+	public boolean validateLoginToken(int userId,String token);
+	
+	public boolean userIdValidation(int userId);
+
+	public boolean validateToken(String token);
 	
 	}

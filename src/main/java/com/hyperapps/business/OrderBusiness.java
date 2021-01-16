@@ -14,10 +14,9 @@ import com.hyperapps.constants.HyperAppsConstants;
 import com.hyperapps.logger.ConfigProperties;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.APIResponse;
-import com.hyperapps.model.BusinessOperatingTimings;
-import com.hyperapps.model.CommonData;
 import com.hyperapps.model.DeliveryAreas;
 import com.hyperapps.model.Order;
+import com.hyperapps.model.Profile.Business_operating_timings;
 import com.hyperapps.model.Response;
 import com.hyperapps.model.Store;
 import com.hyperapps.request.OrderItemsRequest;
@@ -41,9 +40,6 @@ public class OrderBusiness {
 	
 	@Autowired
 	Response response;
-	
-	@Autowired
-	CommonData commonData;
 	
 	@Autowired
 	OrderService orderService;
@@ -357,10 +353,10 @@ public class OrderBusiness {
 	}
 
 	public Store validateDeliveryTime(Store store) {
-		List<BusinessOperatingTimings> ls = store.getBusiness_operating_timings();
+		List<Business_operating_timings> ls = store.getBusiness_operating_timings();
 		if( ls!=null && ls.size()>0)
 		{
-			for (BusinessOperatingTimings businessOperatingTimings : ls) {
+			for (Business_operating_timings businessOperatingTimings : ls) {
 				if(CalendarUtil.getCurrentDay().equalsIgnoreCase(businessOperatingTimings.getDay()))
 				{
 					if(CalendarUtil.getBusinessTimingStatus(businessOperatingTimings.getFrom(), businessOperatingTimings.getTo()))
