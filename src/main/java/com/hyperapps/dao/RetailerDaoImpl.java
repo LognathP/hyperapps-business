@@ -19,6 +19,7 @@ import com.hyperapps.constants.RetailerQueryConstants;
 import com.hyperapps.logger.ConfigProperties;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.Category;
+import com.hyperapps.model.Customer;
 import com.hyperapps.model.Product;
 import com.hyperapps.model.Profile;
 import com.hyperapps.model.Profile.Business_operating_timings;
@@ -422,7 +423,7 @@ public class RetailerDaoImpl implements RetailerDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				CommonUtils.closeDB(null, null, preStmt);
+				CommonUtils.closeDB(connection, null, preStmt);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB addTeamMember " + e.getMessage());
@@ -485,6 +486,115 @@ public class RetailerDaoImpl implements RetailerDao {
 		return stat;
 	}
 	
+	@Override
+	public boolean addCustomer(String customers_firstname, String customers_telephone, String customers_email_address){
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		boolean flag = false;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(RetailerQueryConstants.ADD_CUSTOMER);
+			preStmt.setString(1, customers_firstname);
+			preStmt.setString(2, customers_email_address);
+			preStmt.setString(3, customers_telephone);
+			if(preStmt.executeUpdate()>0)
+			flag = true;
+			
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE addCustomer " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, null, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB addCustomer " + e.getMessage());
+			}
+
+		}
+		return flag;
+	}
 	
-	
+	@Override
+	public boolean addfeedback(int user_id, String details){
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		boolean flag = false;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(RetailerQueryConstants.ADD_FEEDBACK);
+			preStmt.setString(1, details);
+			preStmt.setInt(2, user_id);
+			if(preStmt.executeUpdate()>0)
+			flag = true;
+			
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE addfeedback " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, null, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB addfeedback " + e.getMessage());
+			}
+
+		}
+		return flag;
+	}
+
+	@Override
+	public List<Customer> fetchCustomerList(int customer_type) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		List<Customer> custList = new ArrayList<Customer>();
+		ResultSet res = null;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(RetailerQueryConstants.GET_CUSTOMER_LIST);
+			preStmt.setInt(1, customer_type);
+			res = preStmt.executeQuery();
+			while(res.next())
+			{
+				Customer cust = new Customer();
+				cust.setId(res.getInt(1));
+				cust.setCustomers_gender(res.getString(2));
+				cust.setCustomers_firstname(res.getString(3));
+				cust.setCustomers_lastname(res.getString(4));
+				cust.setCustomers_dob(res.getString(5));
+				cust.setCustomers_email_address(res.getString(6));
+				cust.setCustomers_default_address_id(res.getString(7));
+				cust.setCustomers_telephone(res.getString(8));
+				cust.setCustomers_fax(res.getString(9));
+				cust.setCustomers_password(res.getString(10));
+				cust.setCustomers_newsletter(res.getString(11));
+				cust.setCreated_at(res.getString(12));
+				cust.setUpdated_at(res.getString(13));
+				cust.setOtp(res.getString(14));
+				cust.setType(res.getString(15));
+				cust.setEnable(res.getString(16));
+				cust.setCustomer_type(res.getString(17));
+				cust.setCustom_message(res.getString(18));
+				cust.setStore_id(res.getString(19));
+				cust.setSelected(res.getInt(20) == 0 ? false : true);
+				custList.add(cust);
+			}
+						
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE fetchCustomerList " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, res, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB fetchCustomerList " + e.getMessage());
+			}
+
+		}
+		return custList;
+	}
 }

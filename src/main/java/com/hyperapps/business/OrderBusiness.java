@@ -26,6 +26,7 @@ import com.hyperapps.request.OrderRequest;
 import com.hyperapps.service.OrderService;
 import com.hyperapps.util.CalendarUtil;
 import com.hyperapps.util.CommonUtils;
+import com.hyperapps.util.ResponseKeys;
 import com.hyperapps.validation.OrderValidationService;
 import com.hyperapps.validation.RetailerValidationService;
 
@@ -67,7 +68,7 @@ public class OrderBusiness {
 					response.setStatus(HttpStatus.OK.toString());
 					response.setMessage("Orders listed Successfully");
 					HashMap<String,Object> orders = new HashMap<String,Object>();
-					orders.put("orders", orderList);
+					orders.put(ResponseKeys.orders, orderList);
 					JSONObject jb = new JSONObject(orders);
 					response.setData(jb);
 					response.setError(HyperAppsConstants.RESPONSE_FALSE);

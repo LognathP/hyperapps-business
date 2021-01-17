@@ -29,6 +29,14 @@ public interface RetailerQueryConstants {
 	
 	String REMOVE_TEAM_MEMBER = "DELETE FROM users WHERE email=? and parent_id=?";
 	
+	String ADD_CUSTOMER = "INSERT INTO customers (customers_firstname,customers_email_address,customers_telephone) VALUES(?,?,?)";
+	
+	String ADD_FEEDBACK = "INSERT INTO feedback (message,store_id) VALUES(?,(select store_id from users where id=?))";
+	
+	String GET_CUSTOMER_LIST = "SELECT id, customers_gender, customers_firstname, customers_lastname,  DATE_FORMAT(customers_dob,'%Y-%m-%d') as customers_dob,"
+			+ " customers_email_address, customers_default_address_id, customers_telephone, customers_fax,"
+			+ " customers_password, customers_newsletter,  DATE_FORMAT(created_at,'%Y-%m-%d') as created_at, DATE_FORMAT(updated_at,'%Y-%m-%d') as updated_at, otp, `type`, enable, "
+			+ "customer_type, custom_message, store_id, is_selected FROM customers WHERE customer_type=?";
 	
 }
 

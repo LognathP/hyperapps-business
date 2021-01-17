@@ -1,5 +1,6 @@
 package com.hyperapps.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,6 @@ public class StoreServiceImpl implements StoreService {
 	@Autowired
 	StoreDao storeDao;
 	
-	@Override
-	public List<Category> getStoreCategoryList(int storeId) {
-		return storeDao.getStoreCategoryList(storeId);
-	}
-
 	@Override
 	public List<WelcomeMessage> getWelcomeMessages(String token) {
 		return storeDao.getWelcomeMessages(token);
@@ -75,11 +71,6 @@ public class StoreServiceImpl implements StoreService {
 	}
 	
 	@Override
-	public List<CategoryTree> categoryTreeFetch(int storeId){
-		return storeDao.categoryTreeFetch(storeId);
-	}
-	
-	@Override
 	public List<OfferHistoryData> getOnGoingOfferDetails(int store_id){
 		return storeDao.getOnGoingOfferDetails(store_id);
 	}
@@ -108,10 +99,16 @@ public class StoreServiceImpl implements StoreService {
 	public boolean removeOffer(int id){
 		return storeDao.removeOffer(id);
 	}
+
+	@Override
+	public HashMap<String, Integer> rewardShow(int storeId) {
+		return storeDao.rewardShow(storeId);
+	}
 	
 	@Override
-	public List<Product> getProductsList(int storeId,int catId) {
-		return storeDao.getProductsList(storeId,catId);
+	public boolean updateRewardPoints(int store_id, int reward_point){
+		return storeDao.updateRewardPoints(store_id,reward_point);
 	}
+	
 	
 }

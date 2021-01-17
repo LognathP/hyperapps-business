@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.hyperapps.dao.OrderDao;
 import com.hyperapps.dao.RetailerDao;
 import com.hyperapps.logger.HyperAppsLogger;
+import com.hyperapps.model.Customer;
 import com.hyperapps.model.Profile;
 import com.hyperapps.model.Store;
 import com.hyperapps.model.User;
@@ -48,6 +49,21 @@ public class RetailerServiceImpl implements RetailerService {
 	@Override
 	public boolean removeTeamMember(int user_id, String email) {
 		return retailerDao.removeTeamMember(user_id,email);
+	}
+
+	@Override
+	public boolean addCustomer(String customers_firstname, String customers_telephone, String customers_email_address) {
+		return retailerDao.addCustomer(customers_firstname,customers_telephone,customers_email_address);
+	}
+	
+	@Override
+	public boolean addfeedback(int user_id, String details){
+		return retailerDao.addfeedback(user_id,details);
+	}
+
+	@Override
+	public List<Customer> fetchCustomerList(int customer_type) {
+		return retailerDao.fetchCustomerList(customer_type);
 	}
 
 }

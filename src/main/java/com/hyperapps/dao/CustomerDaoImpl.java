@@ -53,7 +53,7 @@ public class CustomerDaoImpl implements CustomerDao {
 			preStmt.setString(1, customer.getCustomers_telephone());
 			res = preStmt.executeQuery();
 			if (res.next()) {
-				customer.setId(res.getLong(1));
+				customer.setId(res.getInt(1));
 				LOGGER.info(this.getClass(), "CUSTOMER ALREADY EXISTS - ID:" + customer.getId());
 			}
 

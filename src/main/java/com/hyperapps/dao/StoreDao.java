@@ -1,5 +1,6 @@
 package com.hyperapps.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -15,8 +16,6 @@ import com.hyperapps.model.WelcomeMessage;
 @Component
 public interface StoreDao {
 	
-	public List<Category> getStoreCategoryList(int storeId);
-
 	public List<WelcomeMessage> getWelcomeMessages(String token);
 
 	public boolean updateWelcomeMessage(int user_id, String message, int designation);
@@ -34,8 +33,6 @@ public interface StoreDao {
 	public boolean addUpdatedStandardDeliverSettingsDetails(int store_id, int delivery_type, double min_order_amount,
 			double delivery_charge, double free_delivery_above, String delivery_areas, int home_delivery,int updateFlag);
 	
-	public List<CategoryTree> categoryTreeFetch(int store_id);
-
 	public List<OfferHistoryData> getOnGoingOfferDetails(int store_id);
 
 	public List<OfferHistoryData> getHistoryOffer(int store_id);
@@ -47,6 +44,9 @@ public interface StoreDao {
 	public boolean resumeOffer(String offer_valid, String offer_start_date, int id);
 
 	public boolean removeOffer(int id);
-	
-	public List<Product> getProductsList(int storeId, int catId);
+
+	public HashMap<String, Integer> rewardShow(int storeId);
+
+	public boolean updateRewardPoints(int store_id, int reward_point);
+
 }

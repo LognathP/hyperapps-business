@@ -15,13 +15,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table (name = "customers")
 public class Customer {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	Long id;
+	int id;
     public String store_id;
     public String custom_message;
     public String customer_type;
