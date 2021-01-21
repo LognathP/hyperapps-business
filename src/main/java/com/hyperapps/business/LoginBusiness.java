@@ -75,14 +75,9 @@ public class LoginBusiness {
 				login.setLoginToken(getJWTToken(login.getUserId()));
 				loginService.updateLoginToken(login);
 				LOGGER.info(this.getClass(),"LOGIN CHECK SUCCESS");
-				response.setStatus(HttpStatus.OK.toString());
-				response.setMessage("Login Success");
-				response.setError(HyperAppsConstants.RESPONSE_FALSE);
 				JSONObject js = new JSONObject();
 				js.put("token", login.getLoginToken());
-				response.setData(js);
-				apiResponse.setResponse(response);
-				return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
+				return new ResponseEntity<Object>(js,HttpStatus.OK);
 			}
 			else
 			{
