@@ -79,14 +79,15 @@ public class RetailerDaoImpl implements RetailerDao {
 	}
 	
 	@Override
-	public User getUserDetails(String token) {
+	public List<User> getUserDetails(String token) {
 		Connection connection = null;
 		PreparedStatement preStmt = null;
 		ResultSet res = null;
 		PreparedStatement preStmt1 = null;
 		ResultSet res1 = null;
 		int owner = 0;
-		User user = new User();
+		List<User> userList = new ArrayList<User>();
+		
 		Welcome_content welcome = new Welcome_content();
 		List<Team_members> tlist = new ArrayList<User.Team_members>();
 		try {
@@ -95,6 +96,7 @@ public class RetailerDaoImpl implements RetailerDao {
 			preStmt.setString(1, token);
 			res = preStmt.executeQuery();
 			if(res.next()) {
+				User user = new User();
 				user.setUser_id(res.getInt(1));
 				user.setName(res.getString(2));
 				user.setEmail(res.getString(3));
@@ -141,6 +143,7 @@ public class RetailerDaoImpl implements RetailerDao {
 					res1.close();
 					preStmt1.close();
 				}
+				userList.add(user);
 			}
 
 		} catch (Exception e) {
@@ -155,7 +158,7 @@ public class RetailerDaoImpl implements RetailerDao {
 			}
 
 		}
-		return user;
+		return userList;
 	}
 	
 	

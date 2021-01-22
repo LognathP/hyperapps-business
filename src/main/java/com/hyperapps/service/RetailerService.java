@@ -12,7 +12,7 @@ import com.hyperapps.request.ProfileUpdateRequest;
 @Service
 public interface RetailerService {
 	
-	public User getUserDetails(String token);
+	public List<User> getUserDetails(String token);
 
 	public List<Profile> getProfileDetails(int userId);
 

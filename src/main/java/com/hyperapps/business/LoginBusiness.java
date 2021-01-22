@@ -1,6 +1,10 @@
 package com.hyperapps.business;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -112,12 +116,13 @@ public class LoginBusiness {
 	}
 
 	public Object getUserDetails(String token) {
-			User user = retailerService.getUserDetails(token);
-			if (user.getUser_id()!=0) {
+		List<User> userList = new ArrayList<User>();
+			userList = retailerService.getUserDetails(token);
+			if (userList.size()>0) {
 				LOGGER.info(this.getClass(), "USER DETAILS LISTED SUCCESSFULLY");
 				response.setStatus(HttpStatus.OK.toString());
 				response.setMessage("User Details Listed Successfully");
-				response.setData(user);
+				response.setData(userList);
 				response.setError(HyperAppsConstants.RESPONSE_FALSE);
 				apiResponse.setResponse(response);
 				return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);

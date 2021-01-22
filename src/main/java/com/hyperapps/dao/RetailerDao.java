@@ -15,7 +15,7 @@ public interface RetailerDao {
 
 	public boolean isStoreAvailable(int retailerId);
 
-	public User getUserDetails(String token);
+	public List<User> getUserDetails(String token);
 
 	public List<Profile> getProfileDetails(int userId);
 

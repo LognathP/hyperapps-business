@@ -27,7 +27,7 @@ public class RetailerServiceImpl implements RetailerService {
 	
 	
 	@Override
-	public User getUserDetails(String token) {
+	public List<User> getUserDetails(String token) {
 		return retailerDao.getUserDetails(token);
 	}
 
