@@ -161,6 +161,7 @@ public class RetailerBusiness {
 			String business_short_desc, String business_long_desc, String store_category_ids, int physical_store_status,
 			String physical_store_address, String business_phone, int business_operating_mode,
 			String business_operating_timings, int store_id) {
+		LOGGER.info(this.getClass(), "UPDATE PROFILE BUSINESS LAYER");
 		ProfileUpdateRequest prof = new ProfileUpdateRequest();
 		prof.setUser_id(user_Id);
 		prof.setBusiness_name(business_name);
@@ -173,6 +174,7 @@ public class RetailerBusiness {
 		prof.setBusiness_phone(business_phone);
 		prof.setStore_category_ids(store_category_ids);
 		prof.setId(store_id);
+		System.out.println(prof.toString());
 		if (loginService.validateLoginToken(user_Id,token)) {
 			if (retailerService.updateUserProfile(prof,0)) {
 				LOGGER.info(this.getClass(), "USER PROFILE UPDATED SUCCESSFULLY");
