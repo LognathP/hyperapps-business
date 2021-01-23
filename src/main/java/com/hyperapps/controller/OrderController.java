@@ -26,7 +26,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	@Autowired
 	OrderBusiness orderBusiness;
 
-	@GetMapping("/api/retailer/orders/list/{storeId}")
+	@GetMapping("/api/retailer/order/list/{storeId}")
 	public Object getOrdersRetailer(@PathVariable ("storeId") String store_id,@RequestParam String token) throws Exception {
 		Logger.info(this.getClass(),"RETAILER GET ALL ORDERS API CALL STARTED AT "+dateFormat.format(new Date()));
 		return orderBusiness.getAllRetailerOrders(store_id,token);
