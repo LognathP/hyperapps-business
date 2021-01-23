@@ -4,9 +4,11 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class Profile {
 
 	    public int id;
@@ -31,12 +33,14 @@ public class Profile {
 
 	    @Getter
 	    @Setter
+	    @ToString
 	    public static class Business_phone {
 	        public String phone;
 	    }
 
 	    @Getter
 	    @Setter
+	    @ToString
 	    public static class Business_operating_timings {
 	        public String day;
 	        public String from;

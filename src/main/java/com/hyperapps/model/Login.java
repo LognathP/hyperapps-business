@@ -7,11 +7,12 @@ import com.hyperapps.util.AttributeEncryptor;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
+@ToString
 public class Login {
 
 	String email;

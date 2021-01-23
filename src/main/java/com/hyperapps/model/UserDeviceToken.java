@@ -19,11 +19,13 @@ import com.hyperapps.util.AttributeEncryptor;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Entity
 @Table (name = "user_devicetoken")
+@ToString
 public class UserDeviceToken {
 
 	@Id

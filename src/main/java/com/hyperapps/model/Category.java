@@ -1,11 +1,12 @@
 package com.hyperapps.model;
 
 import lombok.Setter;
-
+import lombok.ToString;
 import lombok.Getter;
 
 @Getter
 @Setter
+@ToString
 public class Category {
 
 	    public int id;

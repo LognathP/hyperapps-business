@@ -4,9 +4,11 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
+@ToString
 public class CategoryTree {
 
 	public int id;
@@ -21,6 +23,7 @@ public class CategoryTree {
 
 	@Setter
 	@Getter
+	@ToString
 	public static class Sub_category {
 		public int id;
 		public int rootcategory_id;
@@ -34,6 +37,7 @@ public class CategoryTree {
 
 	@Setter
 	@Getter
+	@ToString
 	public static class Child_category {
 
 		public int id;

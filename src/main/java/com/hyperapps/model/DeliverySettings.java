@@ -6,9 +6,11 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class DeliverySettings {
 
     public int id;
@@ -22,6 +24,7 @@ public class DeliverySettings {
 
     @Getter
     @Setter
+    @ToString
     public static class Delivery_areas {
         public String name;
         public String lat;

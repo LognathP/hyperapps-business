@@ -12,11 +12,13 @@ import com.hyperapps.model.Profile.Business_phone;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Component
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 public class Store{
 
 	@Qualifier("id")
@@ -89,21 +91,7 @@ public class Store{
     public boolean deliveryAvailable;
     public boolean storeTimeAvailable;
 	
-    @Override
-	public String toString() {
-		return "Store [store_id=" + store_id + ", business_name=" + business_name + ", business_short_desc="
-				+ business_short_desc + ", user_image=" + user_image + ", business_long_desc=" + business_long_desc
-				+ ", running_status=" + running_status + ", physical_store_status=" + physical_store_status
-				+ ", physical_store_address=" + physical_store_address + ", business_phone=" + business_phone
-				+ ", business_operating_mode=" + business_operating_mode + ", business_operating_timings="
-				+ business_operating_timings + ", delivery_areas=" + delivery_areas + ", home_delivery_status="
-				+ home_delivery_status + ", min_order_amount=" + min_order_amount + ", user_following_status="
-				+ user_following_status + ", delivery_charge=" + delivery_charge + ", store_tax_status="
-				+ store_tax_status + ", store_tax_percentage=" + store_tax_percentage + ", store_tax_gst="
-				+ store_tax_gst + ", store_welcome_message=" + store_welcome_message + ", free_delivery_above="
-				+ free_delivery_above + ", store_status=" + store_status + ", deliveryAvailable=" + deliveryAvailable
-				+ ", storeTimeAvailable=" + storeTimeAvailable + "]";
-	}
+    
     
     
 }
