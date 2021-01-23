@@ -34,26 +34,26 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	}
 	
 	@PostMapping(value = "/api/retailer/profile/update/{userId}",consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-	public Object updateCustomerProfile(@PathVariable("userId") int user_Id,@RequestParam String token,@RequestParam String userId,@RequestParam String business_name,
+	public Object updateCustomerProfile(@PathVariable("userId") int user_Id,@RequestParam String token,@RequestParam String user_id,@RequestParam String business_name,
 			@RequestParam String business_short_desc,
 			@RequestParam String business_long_desc,@RequestParam String store_category_ids,
 			@RequestParam int physical_store_status,@RequestParam String physical_store_address,
 			@RequestParam String business_phone,@RequestParam int business_operating_mode,
 			@RequestParam String business_operating_timings,@RequestParam int store_id) {
 		Logger.info(this.getClass(),"UPDATE RETAILER PROFILE API CALL STARTED AT "+dateFormat.format(new Date()));
-		return retailerBusiness.updateUserProfile(user_Id,token,userId,business_name,
+		return retailerBusiness.updateUserProfile(user_Id,token,user_id,business_name,
 				business_short_desc,business_long_desc,store_category_ids,physical_store_status,
 				physical_store_address,business_phone,business_operating_mode,business_operating_timings,store_id);
 	}
 	@PutMapping(value = "/api/retailer/profile/update/{userId}",consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-	public Object updateCustomerProfileImage(@PathVariable("userId") int user_Id,@RequestParam String token,@RequestParam String userId,@RequestParam String business_name,
+	public Object updateCustomerProfileImage(@PathVariable("userId") int user_Id,@RequestParam String token,@RequestParam String user_id,@RequestParam String business_name,
 			@RequestParam String business_short_desc,
 			@RequestParam String business_long_desc,@RequestParam String store_category_ids,
 			@RequestParam int physical_store_status,@RequestParam String physical_store_address,
 			@RequestParam String business_phone,@RequestParam int business_operating_mode,
 			@RequestParam String business_operating_timings,@RequestParam String userImage,@RequestParam int store_id) {
 		Logger.info(this.getClass(),"UPDATE RETAILER PROFILE IMAGE API CALL STARTED AT "+dateFormat.format(new Date()));
-		return retailerBusiness.updateUserProfileImage(user_Id,token,userId,business_name,
+		return retailerBusiness.updateUserProfileImage(user_Id,token,user_id,business_name,
 				business_short_desc,business_long_desc,store_category_ids,physical_store_status,
 				physical_store_address,business_phone,business_operating_mode,business_operating_timings,userImage,store_id);
 	}
