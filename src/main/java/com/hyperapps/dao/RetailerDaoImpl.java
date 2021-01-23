@@ -262,7 +262,7 @@ public class RetailerDaoImpl implements RetailerDao {
 			preStmt.setString(1, prof.getBusiness_name());
 			preStmt.setString(2, prof.getBusiness_short_desc());
 			preStmt.setString(3, prof.getBusiness_long_desc());
-			preStmt.setString(4, prof.getCategory_list());
+			preStmt.setString(4, prof.getStore_category_ids().substring(0, prof.getStore_category_ids().length()-1));
 			preStmt.setInt(5, prof.getPhysical_store_status());
 			preStmt.setString(6, prof.getPhysical_store_address());
 			preStmt.setString(7, prof.getBusiness_phone());
