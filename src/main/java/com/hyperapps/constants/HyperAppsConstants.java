@@ -48,6 +48,8 @@ public interface HyperAppsConstants {
 	
 	String RESPONSE_TRUE = "true";
 	String RESPONSE_FALSE = "false";
+
+	int ACTIVE = 1;
 	
 
 	

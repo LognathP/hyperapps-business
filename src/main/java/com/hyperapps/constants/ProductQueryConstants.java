@@ -5,7 +5,7 @@ public interface ProductQueryConstants {
 	public String GET_ALL_CATEGORIES = "select r.id,r.name,r.image_path,r.active,r.category_status from rootcategories r,invrootcategories i where r.id = i.rootcategory_id\r\n" + 
 			" and r.active = 1 and i.active = 1 and i.store_id = ?";
 	
-	public String GET_STORE_ROOT_CATEGORY="SELECT r.name,r.image_path,r.active,i.rootcategory_id,i.id FROM rootcategories r,invrootcategories i where r.id = i.rootcategory_id and i.store_id = ?";
+	public String GET_STORE_ROOT_CATEGORY="SELECT r.name,r.image_path,r.active,i.rootcategory_id,i.id FROM rootcategories r,invrootcategories i where r.id = i.rootcategory_id and i.store_id = ? and i.active = ?";
 	
 	public String GET_STORE_PARENT_CATEGORY="SELECT p.id,p.rootcategory_id,ic.parentcategory_id,p.name,p.image_path,p.active from parentcategories p,invparentcategories ic where p.id = ic.parentcategory_id and p.rootcategory_id = ic.rootcategory_id and p.rootcategory_id = ?";
 	

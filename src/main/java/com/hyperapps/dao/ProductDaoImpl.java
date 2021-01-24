@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.hyperapps.constants.HyperAppsConstants;
 import com.hyperapps.constants.ProductQueryConstants;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.Category;
@@ -82,6 +83,7 @@ public class ProductDaoImpl implements ProductDao {
 			connection = jdbctemp.getDataSource().getConnection();
 			preStmt = connection.prepareStatement(ProductQueryConstants.GET_STORE_ROOT_CATEGORY);
 			preStmt.setInt(1, storeId);
+			preStmt.setInt(2, HyperAppsConstants.ACTIVE);
 			res = preStmt.executeQuery();
 			while(res.next()) {
 				CategoryTree catTree = new CategoryTree();
