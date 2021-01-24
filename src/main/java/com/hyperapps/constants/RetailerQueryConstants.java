@@ -27,7 +27,7 @@ public interface RetailerQueryConstants {
 	
 	String UPDATE_TEAM_COUNT = "update users set team_member_count = team_member_count + 1 where id = ?";
 	
-	String REMOVE_TEAM_MEMBER = "DELETE FROM users WHERE email=? and parent_id=?";
+	String REMOVE_TEAM_MEMBER = "DELETE FROM users WHERE email=? and id=?";
 	
 	String ADD_CUSTOMER = "INSERT INTO customers (customers_firstname,customers_email_address,customers_telephone) VALUES(?,?,?)";
 	

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,7 +84,6 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		Logger.info(this.getClass(),"UPDATE STANDARD DELIVERY SETTINGS API CALL STARTED AT "+dateFormat.format(new Date()));
 		return storeBusiness.updateStandardDeliverSettingsDetails(token,store_id,delivery_type,min_order_amount,delivery_charge,
 				free_delivery_above,delivery_areas,home_delivery);
-		
 	}
 	
 	@GetMapping("/api/retailer/offer/ongoing/{storeId}/{userId}")
@@ -125,7 +125,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return storeBusiness.resumeOffer(token,store_id,offer_valid,offer_start_date,id);
 	}
 	
-	@PostMapping("/api/retailer/offer/remove/{id}")
+	@DeleteMapping("/api/retailer/offer/remove/{id}")
 	public Object removeOffer(@PathVariable ("id") int id,@RequestParam String token) throws Exception {
 		Logger.info(this.getClass(),"REMOVE OFFER DETAILS API CALL STARTED AT "+dateFormat.format(new Date()));
 		return storeBusiness.removeOffer(id,token);
