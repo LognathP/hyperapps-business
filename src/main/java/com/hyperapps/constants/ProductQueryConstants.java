@@ -14,9 +14,9 @@ public interface ProductQueryConstants {
 	public String GET_PRODUCT_DETAILS_BY_CATEGORY= "select p.id,p.name,p.category_id,p.description,p.image_path,p.active,i.product_id,i.store_id,i.price,\r\n" + 
 			"i.special_price,i.promotional_price,i.weight,i.color,i.`size`,i.quantity,i.option1,i.option2 from products p,invproducts i where p.id = i.product_id and i.store_id = ? and i.category_id = ?";
 	
-	public String UPDATE_PARENT_CATEGORY_STATUS = "update invparentcategories set active = ? where parentcategory_id = ?";
+	public String UPDATE_PARENT_CATEGORY_STATUS = "update invparentcategories set active = ? where id = ?";
 	
-	public String UPDATE_ROOT_CATEGORY_STATUS = "update invrootcategories set active = ? where rootcategory_id = ?";
+	public String UPDATE_ROOT_CATEGORY_STATUS = "update invrootcategories set active = ? where id = ?";
 	
 	public String UPDATE_PRODUCT_CATEGORY_STATUS = "update invproducts set active = ? where product_id = ?";
 	
