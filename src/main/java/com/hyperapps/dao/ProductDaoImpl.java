@@ -83,7 +83,6 @@ public class ProductDaoImpl implements ProductDao {
 			connection = jdbctemp.getDataSource().getConnection();
 			preStmt = connection.prepareStatement(ProductQueryConstants.GET_STORE_ROOT_CATEGORY);
 			preStmt.setInt(1, storeId);
-			preStmt.setInt(2, HyperAppsConstants.ACTIVE);
 			res = preStmt.executeQuery();
 			while(res.next()) {
 				CategoryTree catTree = new CategoryTree();
