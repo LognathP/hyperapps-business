@@ -296,7 +296,6 @@ public class RetailerBusiness {
 	public Object fetchCustomerList(String token, String customer_type) {
 		ResponseEntity<Object> respEntity = null;
 		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
-			System.out.println(customer_type);
 			List<Customer> customerList = retailerService.fetchCustomerList(customer_type);
 			if (customerList.size() != 0) {
 				LOGGER.info(this.getClass(), "CUSTOMER LISTED SUCCESSFULLY");

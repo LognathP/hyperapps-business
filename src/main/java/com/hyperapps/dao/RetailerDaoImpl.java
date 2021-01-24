@@ -557,13 +557,13 @@ public class RetailerDaoImpl implements RetailerDao {
 		String query = null;
 		try {
 			query = RetailerQueryConstants.GET_CUSTOMER_LIST;
-			if(customer_type!=null)
+			if(customer_type.length()>0)
 			{
-				query = RetailerQueryConstants.GET_CUSTOMER_LIST +  "WHERE customer_type=?";
+				query = RetailerQueryConstants.GET_CUSTOMER_LIST +  " WHERE customer_type=?";
 			}
 			connection = jdbctemp.getDataSource().getConnection();
 			preStmt = connection.prepareStatement(query);
-			if(customer_type!=null)
+			if(customer_type.length()>0)
 			{
 				preStmt.setString(1, customer_type);
 			}
