@@ -35,6 +35,6 @@ public interface RetailerDao {
 
 	public boolean addfeedback(int user_id, String details);
 
-	public List<Customer> fetchCustomerList(int customer_type);
+	public List<Customer> fetchCustomerList(String customer_type);
 	
 	}

@@ -88,7 +88,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	}
 	
 	@PostMapping(value = "/api/retailer/customer/total_list")
-	public Object fetchCustomerList(@RequestParam String token,@RequestParam int customer_type) {
+	public Object fetchCustomerList(@RequestParam String token,@RequestParam String customer_type) {
 		Logger.info(this.getClass(),"FETCH CUSTOMER LIST API CALL STARTED AT "+dateFormat.format(new Date()));
 		return retailerBusiness.fetchCustomerList(token,customer_type);
 	}

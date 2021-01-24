@@ -62,7 +62,7 @@ public class RetailerServiceImpl implements RetailerService {
 	}
 
 	@Override
-	public List<Customer> fetchCustomerList(int customer_type) {
+	public List<Customer> fetchCustomerList(String customer_type) {
 		return retailerDao.fetchCustomerList(customer_type);
 	}
 

@@ -549,15 +549,24 @@ public class RetailerDaoImpl implements RetailerDao {
 	}
 
 	@Override
-	public List<Customer> fetchCustomerList(int customer_type) {
+	public List<Customer> fetchCustomerList(String customer_type) {
 		Connection connection = null;
 		PreparedStatement preStmt = null;
 		List<Customer> custList = new ArrayList<Customer>();
 		ResultSet res = null;
+		String query = null;
 		try {
+			query = RetailerQueryConstants.GET_CUSTOMER_LIST;
+			if(customer_type!=null)
+			{
+				query = RetailerQueryConstants.GET_CUSTOMER_LIST +  "WHERE customer_type=?";
+			}
 			connection = jdbctemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(RetailerQueryConstants.GET_CUSTOMER_LIST);
-			preStmt.setInt(1, customer_type);
+			preStmt = connection.prepareStatement(query);
+			if(customer_type!=null)
+			{
+				preStmt.setString(1, customer_type);
+			}
 			res = preStmt.executeQuery();
 			while(res.next())
 			{
