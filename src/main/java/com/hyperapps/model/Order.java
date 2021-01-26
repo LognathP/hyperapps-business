@@ -58,7 +58,7 @@ public class Order {
     public OfferHistoryData offer_details;
     @Qualifier("payment_details")
     @JsonProperty("payment_details")
-    public PaymentResponse payment_details;
+    public String payment_details;
     @Qualifier("delivery_info")
     @JsonProperty("delivery_info")
     public DeliveryInfo deliveryInfo;

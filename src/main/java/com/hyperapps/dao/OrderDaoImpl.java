@@ -72,15 +72,7 @@ public class OrderDaoImpl implements OrderDao {
 				order.setRetailer_id(res.getInt(7));
 				order.setOrder_total(res.getString(8));
 				order.setOrder_grand_total(res.getString(9));
-				PaymentResponse[] payArray = new Gson().fromJson(res.getString(10), PaymentResponse[].class); 
-				for(PaymentResponse pa : payArray) {
-					pay.setErrorCode(pa.getErrorCode());
-					pay.setMessage(pa.getMessage());
-					pay.setResponseCode(pa.getResponseCode());
-					pay.setResult(pa.getResult());
-					pay.setStatus(pa.getStatus());
-					}
-				order.setPayment_details(pay);
+				order.setPayment_details(res.getString(10));
 				CustomerInfo customerInfo = new CustomerInfo();
 				customerInfo.setCustomer_name(res.getString(11));
 				customerInfo.setCustomers_email_address(res.getString(12));
