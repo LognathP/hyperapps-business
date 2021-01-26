@@ -12,7 +12,7 @@ public interface RetailerQueryConstants {
 
 	String GET_PROFILE_DETAILS = "select p.id,p.business_name,p.business_short_desc,p.business_long_desc,p.store_category_ids,p.physical_store_status,p.physical_store_address,p.business_phone,p.business_operating_mode,p.business_operating_timings,p.status,p.created_at,p.updated_at,p.user_id,p.user_image,p.store_tax_status,p.store_tax_percentage,p.store_tax_gst from profiles p where p.user_id = ?";	
 
-	String GET_CATEGORY_DETAILS = "select r.id,r.name,r.image_path,r.active,r.category_status from rootcategories r where r.id = ?";
+	String GET_CATEGORY_DETAILS = "select r.id,r.name,r.image_path,i.active,r.category_status from rootcategories r,invrootcategories i where r.id = i.rootcategory_id and r.id = ?";
 	
 	String UPDATE_PROFILE_DETAILS = "UPDATE profiles SET business_name=?, business_short_desc=?, business_long_desc=?, store_category_ids=?, physical_store_status=?, physical_store_address=?, business_phone=?, business_operating_mode=?, business_operating_timings=?, status=?,updated_at=current_timestamp, user_id=?,user_image=? WHERE id=?";
 	
