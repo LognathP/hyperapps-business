@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.hyperapps.constants.HyperAppsConstants;
+import com.hyperapps.fcm.PushNotificationService;
 import com.hyperapps.logger.ConfigProperties;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.APIResponse;
@@ -24,6 +25,7 @@ import com.hyperapps.model.WelcomeMessage;
 import com.hyperapps.model.Profile.Business_operating_timings;
 import com.hyperapps.service.StoreService;
 import com.hyperapps.util.ResponseKeys;
+import com.hyperapps.service.EmailService;
 import com.hyperapps.service.RetailerService;
 import com.hyperapps.validation.RetailerValidationService;
 
@@ -39,6 +41,10 @@ public class StoreBusiness {
 	@Autowired
 	StoreService storeService;
 
+	@Autowired
+	EmailService emailService;
+
+	
 	@Autowired
 	RetailerValidationService retailerValidationService;
 
@@ -535,6 +541,29 @@ public class StoreBusiness {
 		}
 	}
 		return respEntity;
+	}
+
+	public Object sendNotification(String notification_type, int store_id, String customer_ids, String email_subject,
+			String email_content, String fcm_title, String fcm_body, String fcm_data) {
+			String [] custIdArr = customer_ids.split(",");
+			if(notification_type.equalsIgnoreCase(HyperAppsConstants.MAIL_NOTIFICATION))
+			{
+				for (String id : custIdArr) {
+					String mailId = storeService.getMailId(id);
+					emailService.sendEmail(mailId, email_subject, email_content);
+				}	
+				
+			}
+			else if (notification_type.equalsIgnoreCase(HyperAppsConstants.PUSH_NOTIFICATION))
+			{
+				
+				ArrayList<String> tokenArray = new ArrayList<String>();
+				for (String id : custIdArr) {
+					tokenArray.add(storeService.getDeviceToken(id));
+				}				
+				PushNotificationService.sendPushNotificationWithData(tokenArray, fcm_body, fcm_title);
+			}
+		return null;
 	}
 
 }

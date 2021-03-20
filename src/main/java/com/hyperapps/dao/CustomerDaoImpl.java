@@ -29,6 +29,7 @@ import com.hyperapps.model.Profile.Business_phone;
 import com.hyperapps.model.PromotionData;
 import com.hyperapps.model.SliderImagesData;
 import com.hyperapps.model.Store;
+import com.hyperapps.model.UserDeviceToken;
 import com.hyperapps.request.AddAddressRequest;
 import com.hyperapps.util.CommonUtils;
 
@@ -757,7 +758,63 @@ public class CustomerDaoImpl implements CustomerDao {
 		return childCatList;
 	}
 	
+	@Override
+	public void addDeviceToken(UserDeviceToken ut) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(CustomerQueryConstants.ADD_DEVICETOKEN);
+			preStmt.setInt(1, ut.getUser_id());
+			preStmt.setString(2, ut.getDevice_token());
+			preStmt.setString(3, ut.getDevice_type());
+			preStmt.setString(4, ut.getUser_type());
+			preStmt.executeUpdate();
+			
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE addDeviceToken " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, null, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB ON addDeviceToken " + e.getMessage());
+			}
+
+		}
+	}
 	
-	
+	@Override
+	public boolean checkDeviceToken(UserDeviceToken ut) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		ResultSet res = null;
+		boolean stat = false;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(CustomerQueryConstants.CHECK_DEVICETOKEN_EXISTS);
+			preStmt.setString(1, ut.getDevice_token());
+			res = preStmt.executeQuery();
+			if (res.next()) {
+				if(res.getInt(1)>0)
+				stat = true;
+			}
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE checkDeviceToken " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, res, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB ON checkDeviceToken " + e.getMessage());
+			}
+
+		}
+		return stat;
+	}
 
 }

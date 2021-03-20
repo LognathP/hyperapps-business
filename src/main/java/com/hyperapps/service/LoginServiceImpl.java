@@ -73,6 +73,11 @@ public class LoginServiceImpl implements LoginService {
 	public boolean validateToken(String token) {
 		return loginDao.validateToken(token);
 	}
+	
+	@Override
+	public int getExistingUserDevicetokenId(int userId) {
+		return loginDao.getExistingUserDevicetokenId(userId);
+	}
 
 
 	

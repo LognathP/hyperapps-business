@@ -71,5 +71,9 @@ public interface StoreQueryConstants {
 	
 	public String UPDATE_REWARD_POINTS = "update rewardprograms set reward_point = ? where store_id=?";
 	
+	public String GET_DEVICE_TOKEN = "select device_token from user_devicetoken where user_id = ?";
+	
+	public String GET_EMAIL_ID = "select c.customers_email_address from customers c where c.id = ?";
+	
 	
 }

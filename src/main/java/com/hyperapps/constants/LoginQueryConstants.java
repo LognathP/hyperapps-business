@@ -15,6 +15,8 @@ public interface LoginQueryConstants {
 	String CHECK_USER_ID = "select count(1) from users where id = ?";
 	
 	String CHECK_TOKEN = "select count(1) from users where remember_token = ?";
+	
+	String GET_DEVICE_TOKEN_ID = "select id from user_devicetoken where user_id = ?";
 
 
 }

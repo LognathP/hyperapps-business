@@ -143,5 +143,14 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return storeBusiness.updateRewardPoints(token,store_id,reward_point);
 	}
 	
+	@PostMapping("/api/retailer/notify/sendNotfication")
+	public Object sendNotification(@RequestParam String notification_type,@RequestParam int store_id,@RequestParam String customer_ids,
+			@RequestParam String email_subject,@RequestParam String email_content,@RequestParam String fcm_title,
+			@RequestParam String fcm_body,@RequestParam String fcm_data) throws Exception {
+		Logger.info(this.getClass(),"SEND NOTIFICATIONS API CALL STARTED AT "+dateFormat.format(new Date()));
+		return storeBusiness.sendNotification(notification_type,store_id,customer_ids,email_subject,
+				email_content,fcm_title,fcm_body,fcm_data);
+	}
+	
 	
 }

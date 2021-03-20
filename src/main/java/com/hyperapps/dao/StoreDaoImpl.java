@@ -627,4 +627,65 @@ public class StoreDaoImpl implements StoreDao {
 		return updStatus;
 	}
 	
+	@Override
+	public String getDeviceToken(String id) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		ResultSet res = null;
+		String token = null;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(StoreQueryConstants.GET_DEVICE_TOKEN);
+			preStmt.setString(1, id);
+			res = preStmt.executeQuery();
+			while (res.next()) {
+				token = res.getString(1);
+			}
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getDeviceToken " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, res, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB getDeviceToken " + e.getMessage());
+			}
+
+		}
+		return token;
+	}
+	
+	@Override
+	public String getMailId(String id) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		ResultSet res = null;
+		String email = null;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(StoreQueryConstants.GET_EMAIL_ID);
+			preStmt.setString(1, id);
+			res = preStmt.executeQuery();
+			while (res.next()) {
+				email = res.getString(1);
+			}
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getMailId " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, res, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB getMailId " + e.getMessage());
+			}
+
+		}
+		return email;
+	}
+
+	
 }

@@ -23,5 +23,7 @@ public interface LoginDao {
 	public boolean userIdValidation(int userId);
 
 	public boolean validateToken(String token);
+
+	public int getExistingUserDevicetokenId(int userId);
 	
 	}

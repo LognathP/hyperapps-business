@@ -25,5 +25,7 @@ public interface LoginService {
 	
 	public boolean validateToken(String token);
 
+	public int getExistingUserDevicetokenId(int userId);
+
 
 }

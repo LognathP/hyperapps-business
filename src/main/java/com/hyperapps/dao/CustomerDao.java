@@ -19,6 +19,7 @@ import com.hyperapps.model.PromotionData;
 import com.hyperapps.model.SliderImagesData;
 import com.hyperapps.model.Store;
 import com.hyperapps.model.User;
+import com.hyperapps.model.UserDeviceToken;
 import com.hyperapps.request.AddAddressRequest;
 
 @Component
@@ -54,5 +55,8 @@ public interface CustomerDao {
 
 	public List<Child_category> getCategoryDetails(int store_id, int paranetCatgoryId, int subCategoryId);
 
+	public boolean checkDeviceToken(UserDeviceToken ut);
 
+	public void addDeviceToken(UserDeviceToken ut);
+	
 	}

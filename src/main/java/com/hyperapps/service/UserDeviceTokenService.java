@@ -11,7 +11,9 @@ import com.hyperapps.model.UserDeviceToken;
 @Service
 public interface UserDeviceTokenService {
 	
-	public boolean addUserToken(UserDeviceToken userToken);
+	public boolean checkDeviceToken(UserDeviceToken ut);
+	
+	public void addDeviceToken(UserDeviceToken ut);
 	
 	
 

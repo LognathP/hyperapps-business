@@ -49,4 +49,8 @@ public interface StoreDao {
 
 	public boolean updateRewardPoints(int store_id, int reward_point);
 
+	public String getDeviceToken(String id);
+
+	public String getMailId(String id);
+
 }

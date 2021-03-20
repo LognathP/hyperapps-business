@@ -51,6 +51,8 @@ public interface HyperAppsConstants {
 
 	int ACTIVE = 1;
 	
+	String MAIL_NOTIFICATION = "Email";
+	String PUSH_NOTIFICATION = "Push";
 
 	
 }

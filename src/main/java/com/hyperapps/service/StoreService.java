@@ -48,6 +48,10 @@ public interface StoreService {
 	public HashMap<String, Integer> rewardShow(int storeId);
 
 	public boolean updateRewardPoints(int store_id, int reward_point);
+
+	public String getDeviceToken(String id);
+
+	public String getMailId(String id);
 	
 		
 }

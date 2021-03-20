@@ -110,5 +110,15 @@ public class StoreServiceImpl implements StoreService {
 		return storeDao.updateRewardPoints(store_id,reward_point);
 	}
 	
+	@Override
+	public String getDeviceToken(String id){
+		return storeDao.getDeviceToken(id);
+	}
+
+	@Override
+	public String getMailId(String id) {
+		return storeDao.getMailId(id);
+	}
+	
 	
 }

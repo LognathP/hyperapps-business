@@ -132,8 +132,12 @@ public class Test {
 //	String m = "Hello World!";
 //	String h = m.substring(6,12) + m.substring(12,6);
 //	System.out.println(h);
-		
-		System.out.println("loganathan".substring(0,4));
+		String s [];
+		String s1 = "a,b,c,e";
+		s = s1.split(",");
+		for (String string : s) {
+			System.out.println(string);
+		}
 
 	}
 }

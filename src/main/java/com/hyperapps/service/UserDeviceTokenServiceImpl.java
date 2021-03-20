@@ -3,6 +3,7 @@ package com.hyperapps.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.hyperapps.dao.CustomerDao;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.UserDeviceToken;
 import com.hyperapps.repository.UserDeviceTokenRepository;
@@ -11,24 +12,16 @@ import com.hyperapps.repository.UserDeviceTokenRepository;
 public class UserDeviceTokenServiceImpl implements UserDeviceTokenService {
 
 	@Autowired
-	HyperAppsLogger LOGGER;
-	
-	@Autowired
-	UserDeviceTokenRepository userDeviceTokenRepository;
-	
+	CustomerDao customerDao;
+		
+	@Override
+	public boolean checkDeviceToken(UserDeviceToken ut) {
+		return customerDao.checkDeviceToken(ut);
+	}
 	
 	@Override
-	public boolean addUserToken(UserDeviceToken userToken) {
-		boolean status = false;
-		try {
-			userDeviceTokenRepository.save(userToken);
-			status = true;
-		} catch (Exception e) {
-			status = false;
-			LOGGER.error(this.getClass(),"ERROR IN DB WHILE ADDING/UPDATING USER TOKEN  "+e.getMessage().toString());
-			e.printStackTrace();
-		}
-		return status;
+	public void addDeviceToken(UserDeviceToken ut) {
+		customerDao.addDeviceToken(ut);
 	}
 
 

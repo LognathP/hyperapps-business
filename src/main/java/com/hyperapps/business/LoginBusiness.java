@@ -70,12 +70,16 @@ public class LoginBusiness {
 		{
 			if(loginService.checkUser(login))
 			{
+				
 				UserDeviceToken ut = new UserDeviceToken();
 				ut.setUser_id(Integer.parseInt(login.getUserId()));
 				ut.setDevice_token(login.getDevice_token());
 				ut.setUser_type(String.valueOf(HyperAppsConstants.RETAILER_USER));
 				ut.setDevice_type(String.valueOf(HyperAppsConstants.DEVICE_ANDROID));
-				userDeviceTokenService.addUserToken(ut);
+				if(!userDeviceTokenService.checkDeviceToken(ut))
+				{
+					userDeviceTokenService.addDeviceToken(ut);
+				}
 				login.setLoginToken(getJWTToken(login.getUserId()));
 				loginService.updateLoginToken(login);
 				LOGGER.info(this.getClass(),"LOGIN CHECK SUCCESS");

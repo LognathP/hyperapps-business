@@ -238,4 +238,34 @@ public class LoginDaoImpl implements LoginDao {
 		return stat;
 	}
 	
+	@Override
+	public int getExistingUserDevicetokenId(int userId) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		ResultSet res = null;
+		int token = 0;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(LoginQueryConstants.GET_DEVICE_TOKEN_ID);
+			preStmt.setInt(1, userId);
+			res = preStmt.executeQuery();
+			if (res.next()) {
+				token = res.getInt(1);
+			}
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getExistingUserDevicetoken " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, res, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB getExistingUserDevicetoken " + e.getMessage());
+			}
+
+		}
+		return token;
+	}
+	
 }
