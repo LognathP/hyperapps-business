@@ -52,4 +52,9 @@ public class DESEncryptor {
         }
         return null;
     }
+    
+    public static void main(String[] args) {
+		System.out.println(encrypt("Test@123", "hyperapp123"));
+	}
+     
 }

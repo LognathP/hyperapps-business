@@ -12,12 +12,6 @@ import com.hyperapps.fcm.PushNotificationService;
 public class HyperappsBusinessApplication extends SpringBootServletInitializer {
 
 	
-	
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-	return application.sources(HyperappsBusinessApplication.class);
-	}
-	
 	public static void main(String[] args) {
 		SpringApplication.run(HyperappsBusinessApplication.class, args);
 	}

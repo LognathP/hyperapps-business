@@ -7,8 +7,8 @@
         </encoder>
     </appender>
     
-<!--     <property name="LOG_PATH" value="/var/log/hyperapps" />
- -->   
+    <property name="LOG_PATH" value="/home/logs/" />
+   
   <appender name="INFOAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOG_PATH}/infolog.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">

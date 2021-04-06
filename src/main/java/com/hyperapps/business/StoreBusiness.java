@@ -44,7 +44,9 @@ public class StoreBusiness {
 	@Autowired
 	EmailService emailService;
 
-	
+	@Autowired
+	PushNotificationService pushNotificationService;
+
 	@Autowired
 	RetailerValidationService retailerValidationService;
 
@@ -550,7 +552,11 @@ public class StoreBusiness {
 			{
 				for (String id : custIdArr) {
 					String mailId = storeService.getMailId(id);
-					emailService.sendEmail(mailId, email_subject, email_content);
+					if(mailId !=null)
+					{
+						emailService.sendEmail(mailId, email_subject, email_content);
+					}
+					
 				}	
 				
 			}
@@ -561,7 +567,7 @@ public class StoreBusiness {
 				for (String id : custIdArr) {
 					tokenArray.add(storeService.getDeviceToken(id));
 				}				
-				PushNotificationService.sendPushNotificationWithData(tokenArray, fcm_body, fcm_title);
+				pushNotificationService.sendPushNotificationWithData(tokenArray, fcm_body, fcm_title);
 			}
 		return null;
 	}
