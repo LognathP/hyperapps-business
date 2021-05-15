@@ -1,8 +1,5 @@
 package com.hyperapps.request;
 
-import java.util.List;
-
-import com.hyperapps.model.Category;
 
 import lombok.Getter;
 import lombok.Setter;

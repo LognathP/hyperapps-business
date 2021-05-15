@@ -132,12 +132,24 @@ public class Test {
 //	String m = "Hello World!";
 //	String h = m.substring(6,12) + m.substring(12,6);
 //	System.out.println(h);
-		String s [];
-		String s1 = "a,b,c,e";
-		s = s1.split(",");
-		for (String string : s) {
-			System.out.println(string);
-		}
-
+//		String s = "[{\"lng\":\"80.215625\",\"name\":\"Chennai\",\"lat\":\"12.979255\"}]";
+//		Object jp = new JSONParser().parse(s);
+//		JSONArray j = new JSONArray();
+//		j =  (JSONArray) jp;
+//		System.out.println(j.get(0));
+//		JSONObject jb = new JSONObject();
+//		jb = (JSONObject) j.get(0);
+//		System.out.println(jb.get("lat"));
+//		System.out.println(jb.get("lng"));
+//		System.out.println(jb.get("name"));
+		
+		List<String> lis = new ArrayList<String>();
+		lis.add("1");
+		lis.add("2");
+		lis.add("3");
+		lis.add("4");
+		lis.add("5");
+		lis.add("6");
+		lis.add("7");
 	}
 }

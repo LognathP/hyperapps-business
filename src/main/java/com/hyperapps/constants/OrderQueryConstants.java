@@ -19,7 +19,7 @@ public interface OrderQueryConstants {
 			"and o.customer_id = ca.customer_id \r\n" + 
 			"and o.id = oda.order_id \r\n" + 
 			"and p.id = o.store_id \r\n" + 
-			"and oda.address_type = ca.address_label and p.id = ?";
+			"and oda.address_id = ca.id and p.id = ?";
 	
 	String GET_ORDER_STATUS = "select status from orders where id= ?";
 	

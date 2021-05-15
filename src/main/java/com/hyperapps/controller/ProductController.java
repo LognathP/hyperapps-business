@@ -41,6 +41,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	public Object getProductList(@PathVariable("storeId") int storeId,@PathVariable("categoryId") int categoryId,
 			@RequestParam String token) {
 		Logger.info(this.getClass(),"GET PRODUCTS API CALL STARTED AT "+dateFormat.format(new Date()));
+		Logger.info(this.getClass(),"ID's "+storeId + " " + categoryId);
 		return productBusiness.getProductsList(storeId,categoryId,token);
 	}
 	

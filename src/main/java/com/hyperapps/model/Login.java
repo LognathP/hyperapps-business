@@ -1,9 +1,6 @@
 package com.hyperapps.model;
 
-import javax.persistence.Convert;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.hyperapps.util.AttributeEncryptor;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -13,14 +13,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
-import com.hyperapps.constants.CustomerQueryConstants;
-import com.hyperapps.constants.OrderQueryConstants;
 import com.hyperapps.constants.RetailerQueryConstants;
 import com.hyperapps.logger.ConfigProperties;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.Category;
 import com.hyperapps.model.Customer;
-import com.hyperapps.model.Product;
 import com.hyperapps.model.Profile;
 import com.hyperapps.model.Profile.Business_operating_timings;
 import com.hyperapps.model.Profile.Business_phone;

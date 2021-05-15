@@ -73,6 +73,16 @@ public class OrderDaoImpl implements OrderDao {
 				order.setOrder_total(res.getString(8));
 				order.setOrder_grand_total(res.getString(9));
 				order.setPayment_details(res.getString(10));
+				DeliveryInfo deliveryInfo = new DeliveryInfo();
+				Object jp = new JSONParser().parse(res.getString(23));
+				JSONArray j = new JSONArray();
+				j =  (JSONArray) jp;
+				JSONObject jb = new JSONObject();
+				jb = (JSONObject) j.get(0);
+				deliveryInfo.setLatitude(jb.get("lat").toString());
+				deliveryInfo.setLongitutde(jb.get("lng").toString());
+				deliveryInfo.setName(jb.get("name").toString());
+				order.setDeliveryInfo(deliveryInfo);
 				CustomerInfo customerInfo = new CustomerInfo();
 				customerInfo.setCustomer_name(res.getString(11));
 				customerInfo.setCustomers_email_address(res.getString(12));
@@ -107,6 +117,7 @@ public class OrderDaoImpl implements OrderDao {
 					ot.setPrice_per_unit(res2.getString(3));
 					ot.setItem_status(res2.getInt(4));
 					ot.setTotal(res2.getString(5));
+					ot.setName(res2.getString(6));
 					Product p = new Product();
 					p.setName(res2.getString(6));
 					p.setImage_path(res2.getString(7));
