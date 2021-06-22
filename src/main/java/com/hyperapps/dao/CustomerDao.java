@@ -58,5 +58,7 @@ public interface CustomerDao {
 	public boolean checkDeviceToken(UserDeviceToken ut);
 
 	public void addDeviceToken(UserDeviceToken ut);
+
+	void updateDeviceToken(UserDeviceToken ut);
 	
 	}

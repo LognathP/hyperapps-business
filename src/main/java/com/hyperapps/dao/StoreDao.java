@@ -1,5 +1,6 @@
 package com.hyperapps.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,5 +53,7 @@ public interface StoreDao {
 	public String getDeviceToken(String id);
 
 	public String getMailId(String id);
+
+	public ArrayList<String> getBusinessDeviceToken(String custId);
 
 }

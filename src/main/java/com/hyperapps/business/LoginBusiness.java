@@ -80,6 +80,10 @@ public class LoginBusiness {
 				{
 					userDeviceTokenService.addDeviceToken(ut);
 				}
+				else
+				{
+					userDeviceTokenService.updateDeviceToken(ut);
+				}
 				login.setLoginToken(getJWTToken(login.getUserId()));
 				loginService.updateLoginToken(login);
 				LOGGER.info(this.getClass(),"LOGIN CHECK SUCCESS");

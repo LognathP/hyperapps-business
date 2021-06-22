@@ -66,6 +66,11 @@ public class OrderServiceImpl implements OrderService {
 	public void updateCancelledOrderDetails(int order_id,String order_details) {
 		orderDao.updateCancelledOrderDetails(order_id,order_details);		
 	}
+
+	@Override
+	public int getCustomerIdByOrderId(String order_id) {
+		return orderDao.getCustomerIdByOrderId(order_id);
+	}
 	
 	
 

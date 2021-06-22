@@ -1,5 +1,6 @@
 package com.hyperapps.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -118,7 +119,11 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public String getMailId(String id) {
 		return storeDao.getMailId(id);
+	}	
+
+	@Override
+	public ArrayList<String> getBusinessDeviceToken(String custId) {
+		return storeDao.getBusinessDeviceToken(custId);
 	}
-	
-	
+
 }

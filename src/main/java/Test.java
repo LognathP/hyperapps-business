@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,8 +19,10 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.hyperapps.logger.ConfigProperties;
+import com.hyperapps.model.DeliveryAreas;
 import com.hyperapps.model.DeliveryInfo;
 import com.hyperapps.model.Store;
+import com.hyperapps.util.CommonUtils;
 import com.hyperapps.util.DESEncryptor;
 
 public class Test {
@@ -142,14 +145,71 @@ public class Test {
 //		System.out.println(jb.get("lat"));
 //		System.out.println(jb.get("lng"));
 //		System.out.println(jb.get("name"));
+			/*
+			 * Calendar calndr = Calendar.getInstance();
+			 * 
+			 * // Displaying the current time zone String tz_name = calndr.getTimeZone()
+			 * .getDisplayName();
+			 * 
+			 * System.out.println("The Current Time" + " Zone: " + tz_name);
+			 * 
+			 * TimeZone time_zone = TimeZone.getTimeZone("JST");
+			 * 
+			 * // Modifying the time zone calndr.setTimeZone(time_zone);
+			 * System.out.println(calndr.getTimeZone().getID()); // Displaying the modified
+			 * zone System.out.println("Modified Zone: " + calndr.getTimeZone()
+			 * .getDisplayName());
+			 */
+        
+		/*
+		 * String s =
+		 * "[{\"name\":\"\",\"lat\":\"11.163437968184052\",\"lng\":\"32.23123\"},{\"name\":\"\",\"lat\":\"11.16089037607986\",\"lng\":\"77.35164457932115\"},{\"name\":\"\",\"lat\":\"11.163714929077308\",\"lng\":\"77.35014388337731\"}]";
+		 * DeliveryAreas[] userArray = new Gson().fromJson(s, DeliveryAreas[].class);
+		 * for(DeliveryAreas df : userArray) { DeliveryAreas da = new DeliveryAreas();
+		 * da.setName(df.getName()); da.setLat(df.getLat()); da.setLng(df.getLng());
+		 * if(CommonUtils.distance(Double.parseDouble("0.0"), Double.parseDouble("0.0"),
+		 * Double.parseDouble(df.getLat()), Double.parseDouble(df.getLng()),"K")<1000) {
+		 * 
+		 * } }
+		 */
+   
+		/*
+		 * ArrayList<String> s = new ArrayList<String>(); s.add("A"); s.add("B");
+		 * System.out.println(s.toString());
+		 */
 		
-		List<String> lis = new ArrayList<String>();
-		lis.add("1");
-		lis.add("2");
-		lis.add("3");
-		lis.add("4");
-		lis.add("5");
-		lis.add("6");
-		lis.add("7");
+		//Tom and Harry goes to mountain
+		//Tom
+		
+		String sentence = "Tom and Harry goes to mountain";
+		
+		char[] strArr = sentence.toCharArray();
+		StringBuilder matchString = new StringBuilder();
+		String match = "To";
+		
+		char[] strMatchArr = match.toCharArray();
+		for(int i=0;i<strArr.length;i++)
+		{
+			for(int j=0;j<strMatchArr.length;j++)
+			{
+				if(strMatchArr[j] == strArr[i])
+				{
+					matchString.append(strMatchArr[j]);
+					if(matchString.toString().length()==match.length())
+					{
+						System.out.println("String matches");
+						System.out.println(matchString);
+						break;
+					}
+
+				}
+			}
+		}
+		
+		
+		
+		
+		
+        
 	}
 }

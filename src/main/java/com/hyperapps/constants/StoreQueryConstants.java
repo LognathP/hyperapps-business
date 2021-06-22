@@ -75,5 +75,5 @@ public interface StoreQueryConstants {
 	
 	public String GET_EMAIL_ID = "select c.customers_email_address from customers c where c.id = ?";
 	
-	
+	public String GET_BUSINESS_DEVICE_TOKEN = "select ud.device_token from customers c,users u,user_devicetoken ud where c.store_id = u.store_id and u.id = ud.user_id and ud.user_type = 1 and c.id = ?";
 }

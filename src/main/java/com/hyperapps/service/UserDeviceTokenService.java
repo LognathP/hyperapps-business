@@ -14,6 +14,8 @@ public interface UserDeviceTokenService {
 	public boolean checkDeviceToken(UserDeviceToken ut);
 	
 	public void addDeviceToken(UserDeviceToken ut);
+
+	public void updateDeviceToken(UserDeviceToken ut);
 	
 	
 

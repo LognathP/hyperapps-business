@@ -39,4 +39,7 @@ public class OrderItems {
     public boolean isSelected;
     public boolean isActive;
     public Product product_info;
+    @Qualifier("description")
+    @JsonProperty("description")
+    public String description;
 }

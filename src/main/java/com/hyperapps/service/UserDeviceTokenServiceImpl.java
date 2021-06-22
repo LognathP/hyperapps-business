@@ -24,6 +24,11 @@ public class UserDeviceTokenServiceImpl implements UserDeviceTokenService {
 		customerDao.addDeviceToken(ut);
 	}
 
+	@Override
+	public void updateDeviceToken(UserDeviceToken ut) {
+		customerDao.updateDeviceToken(ut);		
+	}
+
 
 
 }

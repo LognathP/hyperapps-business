@@ -93,6 +93,7 @@ public class ProductDaoImpl implements ProductDao {
 				catTree.setId(res.getInt(5));
 				preStmt1 = connection.prepareStatement(ProductQueryConstants.GET_STORE_PARENT_CATEGORY);
 				preStmt1.setInt(1, catTree.getRootcategory_id());
+				preStmt1.setInt(2, storeId);
 				res1 = preStmt1.executeQuery();
 				List<Sub_category> subCatList = new ArrayList<>();
 				while(res1.next())
@@ -107,6 +108,7 @@ public class ProductDaoImpl implements ProductDao {
 					preStmt2 = connection.prepareStatement(ProductQueryConstants.GET_STORE_CHILD_CATEGORY);
 					preStmt2.setInt(1, catTree.getRootcategory_id());
 					preStmt2.setInt(2, subCat.getParentcategory_id());
+					preStmt2.setInt(3, storeId);
 					res2 = preStmt2.executeQuery();
 					List<Child_category> childCatList = new ArrayList<>();
 					while(res2.next())
@@ -118,6 +120,7 @@ public class ProductDaoImpl implements ProductDao {
 						childCat.setActive(res2.getInt(4));
 						childCat.setName(res2.getString(5));
 						childCat.setImage_path(res2.getString(6));
+						childCat.setCategory_id(res2.getInt(1));
 						childCatList.add(childCat);
 					}
 					res2.close();
@@ -259,7 +262,7 @@ public class ProductDaoImpl implements ProductDao {
 		boolean updStatus = false;
 		try {
 			connection = jdbctemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(ProductQueryConstants.UPDATE_PARENT_CATEGORY_STATUS);
+			preStmt = connection.prepareStatement(ProductQueryConstants.UPDATE_PRODUCT_CATEGORY_STATUS);
 			preStmt.setInt(1, active);
 			preStmt.setInt(2, id);
 			if (preStmt.executeUpdate()>0) {

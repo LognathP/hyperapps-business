@@ -1,5 +1,6 @@
 package com.hyperapps.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,6 @@ public interface StoreService {
 
 	public String getMailId(String id);
 	
+	public ArrayList<String> getBusinessDeviceToken(String custId);
 		
 }

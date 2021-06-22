@@ -4,7 +4,7 @@ public interface OrderQueryConstants {
 	
 
 	String GET_ORDER_ITEMS_BYID = "select o2.id,o2.order_item_quantity,o2.price_per_unit,o2.item_status,o2.total,\r\n" + 
-			"p.name,p.image_path from orderitems o2,products p where o2.product_id = p.id and o2.order_id = ?";
+			"p.name,p.image_path,p.description from orderitems o2,products p where o2.product_id = p.id and o2.order_id = ?";
 	
 	String GET_OFFER_DETAILS_BYID = "select o.id,o.offer_heading,o.offer_description,o.offer_percentage,o.offer_flat_amount,o.offer_type,\r\n" + 
 			"	o.offer_start_date,o.offer_valid,o.active,o.store_id from offers o,offer_order oo where o.id = oo.offer_id and oo.order_id = ?";
@@ -13,7 +13,7 @@ public interface OrderQueryConstants {
 			"o.order_total,o.order_grand_total,o.payment_details,c.customers_firstname,c.customers_email_address,\r\n" + 
 			"c.customers_telephone,ca.street_name,ca.pin_code,ca.city_name,ca.state,ca.country,\r\n" + 
 			"p.business_name,p.physical_store_address,p.business_phone,p.user_image,\r\n" + 
-			"oda.location " + 
+			"oda.location,ca.door_no " + 
 			"from orders o,customers c,order_delivery_address oda,customer_addresses ca,profiles p \r\n" + 
 			"where o.customer_id = c.id \r\n" + 
 			"and o.customer_id = ca.customer_id \r\n" + 
@@ -38,5 +38,7 @@ public interface OrderQueryConstants {
 	String UPDATE_ORDER_DETAILS = "update orders set order_details= ?,order_total=?,order_grand_total=? where id = ?";
 	
 	String UPDATE_CANCELLED_ORDER_DETAILS = "update orders set order_details= ? where id = ?";
+	
+	String GET_CUSTOMER_ID_BY_ORDERID = "select customer_id from orders where id = ?";
 
 	}

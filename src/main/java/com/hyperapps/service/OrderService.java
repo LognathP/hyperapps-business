@@ -27,6 +27,8 @@ public interface OrderService {
 	public void updateOrderDetails(int order_id, String order_total, String order_grand_total, String order_details);
 
 	public void updateCancelledOrderDetails(int order_id, String order_details);
+
+	public int getCustomerIdByOrderId(String order_id);
 	
 
 	

@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
+import com.hyperapps.constants.CustomerQueryConstants;
 import com.hyperapps.constants.StoreQueryConstants;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.DeliveryAreas;
@@ -157,7 +158,7 @@ public class StoreDaoImpl implements StoreDao {
 					Delivery_areas deliverInfo = new Delivery_areas();
 					deliverInfo.setName(df.getName());
 					deliverInfo.setLat(df.getLat());
-					deliverInfo.setMlong(df.getMlong());
+					deliverInfo.setLng(df.getLng());
 					dfList.add(deliverInfo);
 				}
 				delv.setDelivery_areas(dfList);
@@ -671,4 +672,33 @@ public class StoreDaoImpl implements StoreDao {
 	}
 
 	
+	@Override
+	public ArrayList<String> getBusinessDeviceToken(String custId) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		ResultSet res = null;
+		ArrayList<String> token = new ArrayList<>();
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(StoreQueryConstants.GET_BUSINESS_DEVICE_TOKEN);
+			preStmt.setString(1, custId);
+			res = preStmt.executeQuery();
+			while (res.next()) {
+				token.add(res.getString(1));
+			}
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getBusinessDeviceToken " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, res, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB getBusinessDeviceToken " + e.getMessage());
+			}
+
+		}
+		return token;
+	}
 }

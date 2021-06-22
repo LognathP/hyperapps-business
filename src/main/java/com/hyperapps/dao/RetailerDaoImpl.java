@@ -185,6 +185,7 @@ public class RetailerDaoImpl implements RetailerDao {
 				for (String catId : catList) {
 					preStmt1 = connection.prepareStatement(RetailerQueryConstants.GET_CATEGORY_DETAILS);
 					preStmt1.setString(1, catId);
+					preStmt1.setInt(2, prof.getId());
 					res1 = preStmt1.executeQuery();
 					while(res1.next())
 					{

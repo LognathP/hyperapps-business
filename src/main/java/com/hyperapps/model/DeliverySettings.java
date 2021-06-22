@@ -28,7 +28,6 @@ public class DeliverySettings {
     public static class Delivery_areas {
         public String name;
         public String lat;
-        @SerializedName("long")
-        public String mlong;
+        public String lng;
     }
 }

@@ -53,6 +53,17 @@ public interface HyperAppsConstants {
 	
 	String MAIL_NOTIFICATION = "Email";
 	String PUSH_NOTIFICATION = "Push";
+	
+	String ORDER_UPDATE  = "Order Status Update";
+	String ORDER_CANCEL_MESSAGE = "Order Cancelled Successfully";
+	String ORDER_ACCEPTED_MESSAGE = "Order Accepted Successfully";
+
+	String ORDER_UPDATE_TITLE = "Order Update";
+	String ORDER_UPDATE_PROCESSED = "Your Order has been Processed Successfully !";
+	String ORDER_UPDATE_CONFIRMED = "Your Order has been Confirmed by Retailer !";
+	String ORDER_UPDATE_COMPLETED = "Your Order has been Completed Successfully !";
+	String ORDER_UPDATE_CANCELLED_BY_CUSTOMER = "Your Order has been Cancelled !";
+	String ORDER_UPDATE_CANCELLED_BY_RETAILER = "Your Order has been Cancelled by Retailer !";
 
 	
 }

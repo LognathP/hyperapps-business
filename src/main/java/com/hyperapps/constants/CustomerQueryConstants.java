@@ -55,10 +55,10 @@ public interface CustomerQueryConstants {
 			"i.special_price,i.promotional_price,i.weight,i.color,i.`size`,i.quantity,i.option1,i.option2 from products p,invproducts i where p.id = i.product_id and i.store_id = ? and i.category_id = ?";
 	
 
-	String CHECK_DEVICETOKEN_EXISTS = "select count(1) from user_devicetoken where device_token = ?";
+	String CHECK_DEVICETOKEN_EXISTS = "select count(1) from user_devicetoken where user_id = ?";
 	
 	String ADD_DEVICETOKEN = "INSERT INTO user_devicetoken (user_id, device_token, device_type, user_type, created_at, updated_at) VALUES(?, ?, ?, ?, current_timestamp, current_timestamp)";
 
-	
+	String UPDATE_DEVICE_TOKEN = "UPDATE user_devicetoken SET device_token=?, device_type=?, user_type=?,updated_at=current_timestamp WHERE user_id=?";
 }
 

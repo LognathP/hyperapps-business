@@ -21,8 +21,6 @@ public class DeliveryAreas {
 	    @Qualifier("lat")
 	    @JsonProperty("lat")
 	    public String lat;
-	    @Qualifier("lng")
-	    @JsonProperty("lng")
 	    public String lng;
    
 }

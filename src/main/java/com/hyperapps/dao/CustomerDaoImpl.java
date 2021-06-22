@@ -437,7 +437,7 @@ public class CustomerDaoImpl implements CustomerDao {
 					if(CommonUtils.distance(Double.parseDouble(store_latitude),
 							Double.parseDouble(store_longitude),
 							Double.parseDouble(df.getLat()),
-							Double.parseDouble(df.getLng()),"K")<10)
+							Double.parseDouble(df.getLng()),"K")<1000)
 					{
 						daList.add(da);
 						store.setDelivery_areas(daList);
@@ -711,6 +711,7 @@ public class CustomerDaoImpl implements CustomerDao {
 				childCat.setActive(res.getInt(4));
 				childCat.setName(res.getString(5));
 				childCat.setImage_path(res.getString(6));
+				childCat.setCategory_id(res.getInt(1));
 				preStmt1 = connection.prepareStatement(CustomerQueryConstants.GET_PRODUCT_DETAILS_BY_CATEGORY);
 				preStmt1.setInt(1, store_id);
 				preStmt1.setInt(2, childCat.getId());
@@ -795,7 +796,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		try {
 			connection = jdbctemp.getDataSource().getConnection();
 			preStmt = connection.prepareStatement(CustomerQueryConstants.CHECK_DEVICETOKEN_EXISTS);
-			preStmt.setString(1, ut.getDevice_token());
+			preStmt.setInt(1, ut.getUser_id());
 			res = preStmt.executeQuery();
 			if (res.next()) {
 				if(res.getInt(1)>0)
@@ -816,5 +817,34 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 		return stat;
 	}
+	
+	@Override
+	public void updateDeviceToken(UserDeviceToken ut) {
+		Connection connection = null;
+		PreparedStatement preStmt = null;
+		try {
+			connection = jdbctemp.getDataSource().getConnection();
+			preStmt = connection.prepareStatement(CustomerQueryConstants.UPDATE_DEVICE_TOKEN);
+			preStmt.setString(1, ut.getDevice_token());
+			preStmt.setString(2, ut.getDevice_type());
+			preStmt.setString(3, ut.getUser_type());
+			preStmt.setInt(4, ut.getUser_id());
+			preStmt.executeUpdate();
+			
+
+		} catch (Exception e) {
+			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE addDeviceToken " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				CommonUtils.closeDB(connection, null, preStmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB ON addDeviceToken " + e.getMessage());
+			}
+
+		}
+	}
+
 
 }

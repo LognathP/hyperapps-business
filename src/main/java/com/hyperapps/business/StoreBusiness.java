@@ -11,11 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
 import com.hyperapps.constants.HyperAppsConstants;
 import com.hyperapps.fcm.PushNotificationService;
 import com.hyperapps.logger.ConfigProperties;
 import com.hyperapps.logger.HyperAppsLogger;
 import com.hyperapps.model.APIResponse;
+import com.hyperapps.model.DeliveryAreas;
 import com.hyperapps.model.DeliverySettings;
 import com.hyperapps.model.Designation;
 import com.hyperapps.model.OfferHistoryData;
@@ -241,6 +243,8 @@ public class StoreBusiness {
 			double min_order_amount, double delivery_charge, double free_delivery_above, String delivery_areas,
 			int home_delivery) {
 		ResponseEntity<Object> respEntity = null;
+		
+		
 		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
 			if ((respEntity = retailerValidationService.validateStoreId(store_id, respEntity)) == null) {
 				if (storeService.addUpdatedStandardDeliverSettingsDetails(store_id, delivery_type, min_order_amount,
@@ -566,7 +570,10 @@ public class StoreBusiness {
 				ArrayList<String> tokenArray = new ArrayList<String>();
 				for (String id : custIdArr) {
 					tokenArray.add(storeService.getDeviceToken(id));
-				}				
+				}	
+				LOGGER.info(getClass(), "SEND PUSH NOTIFICATION TOKEN ARRAY SIZE "+tokenArray.size());
+				LOGGER.info(getClass(), "SEND PUSH NOTIFICATION TOKEN ARRAY "+tokenArray.toString());
+				
 				pushNotificationService.sendPushNotificationWithData(tokenArray, fcm_body, fcm_title);
 			}
 		return null;

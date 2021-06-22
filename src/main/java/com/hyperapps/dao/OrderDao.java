@@ -26,4 +26,6 @@ public interface OrderDao {
 
 	public void updateCancelledOrderDetails(int order_id, String order_details);
 
+	public int getCustomerIdByOrderId(String order_id);
+
 }

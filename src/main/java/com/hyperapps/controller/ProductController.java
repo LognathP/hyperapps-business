@@ -60,6 +60,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	@PostMapping("/api/retailer/products/update/status")
 	public Object updateProductStatus(@RequestParam int id,@RequestParam int active,@RequestParam String token) throws Exception {
 		Logger.info(this.getClass(),"UPDATE ROOT CATEGORY STATUS API CALL STARTED AT "+dateFormat.format(new Date()));
+		Logger.info(this.getClass(),"ID "+id + " ACTIVE "+active);
 		return productBusiness.updateProductStatus(id,active,token);
 	}
 	
@@ -67,6 +68,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	public Object updateProductData(@RequestParam String token,@RequestParam int id,@RequestParam String price,@RequestParam String special_price,
 			@RequestParam String weight,@RequestParam String size,@RequestParam int quantity) throws Exception {
 		Logger.info(this.getClass(),"UPDATE PRODUCT DETAILS API CALL STARTED AT "+dateFormat.format(new Date()));
+		Logger.info(this.getClass(),"ID "+id + " PRICE "+price + " WEIGHT "+weight + " SIZE "+size + " QUA "+quantity);
 		return productBusiness.updateProductData(token,id,price,special_price,weight,size,quantity);
 	}
 	
