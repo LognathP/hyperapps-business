@@ -22,7 +22,6 @@ import com.hyperapps.model.DeliverySettings.Delivery_areas;
 import com.hyperapps.model.Designation;
 import com.hyperapps.model.OfferHistoryData;
 import com.hyperapps.model.Store;
-import com.hyperapps.model.StoreBranch;
 import com.hyperapps.model.WelcomeMessage;
 import com.hyperapps.model.Profile.Business_operating_timings;
 import com.hyperapps.util.CommonUtils;
@@ -703,42 +702,5 @@ public class StoreDaoImpl implements StoreDao {
 		return token;
 	}
 
-	@Override
-	public List<StoreBranch> getBranchList(int storeId) {
-		Connection connection = null;
-		PreparedStatement preStmt = null;
-		ResultSet res = null;
-		List<StoreBranch> branchList = new ArrayList<>();
-		try {
-			connection = jdbctemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(StoreQueryConstants.GET_BRANCH_DETAILS);
-			res = preStmt.executeQuery();
-			while(res.next()) {
-				StoreBranch branch = new StoreBranch();
-				branch.setBranch_id(res.getInt(1));
-				branch.setBranch_name(res.getString(2));
-				branch.setBranch_address(res.getString(3));
-				branch.setBranch_status(res.getInt(4));
-				branch.setBranch_phone(res.getString(5));
-				branch.setBranch_latitude(res.getString(6));
-				branch.setBranch_longitude(res.getString(7));
-				branch.setBranch_delivery_radius(res.getInt(8));
-				branch.setStore_id(res.getInt(9));				
-				branchList.add(branch);				
-			}
-
-		} catch (Exception e) {
-			LOGGER.debug(this.getClass(), "ERROR IN DB WHILE getBranchList " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				CommonUtils.closeDB(connection, res, preStmt);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				LOGGER.error(this.getClass(), "ERROR IN DB WHILE CLOSING DB ON getBranchList " + e.getMessage());
-			}
-
-		}
-		return branchList;
-	}
+	
 }

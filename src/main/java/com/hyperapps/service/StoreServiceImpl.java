@@ -18,7 +18,6 @@ import com.hyperapps.model.Login;
 import com.hyperapps.model.OfferHistoryData;
 import com.hyperapps.model.Product;
 import com.hyperapps.model.Store;
-import com.hyperapps.model.StoreBranch;
 import com.hyperapps.model.WelcomeMessage;
 
 @Component
@@ -127,9 +126,6 @@ public class StoreServiceImpl implements StoreService {
 		return storeDao.getBusinessDeviceToken(custId);
 	}
 
-	@Override
-	public List<StoreBranch> getBranchList(int storeId) {
-		return storeDao.getBranchList(storeId);
-	}
+	
 
 }

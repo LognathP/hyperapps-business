@@ -15,11 +15,11 @@ import com.hyperapps.model.WelcomeMessage;
 @Service
 public interface ProductService {
 	
-	public List<Category> getStoreCategoryList(int storeId, int branchId);
+	public List<Category> getStoreCategoryList(int storeId);
 
-	public List<CategoryTree> categoryTreeFetch(int storeId, int branchId);
+	public List<CategoryTree> categoryTreeFetch(int storeId);
 
-	public List<Product> getProductsList(int storeId, int Category_id, int branchId);
+	public List<Product> getProductsList(int storeId, int Category_id);
 
 	public boolean updateParentCategory(int id, int active);
 

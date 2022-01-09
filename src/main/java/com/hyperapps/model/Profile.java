@@ -30,7 +30,6 @@ public class Profile {
 	    public int store_tax_status;
 	    public String store_tax_percentage;
 	    public String store_tax_gst;
-	    public int branch_count;
 
 	    @Getter
 	    @Setter

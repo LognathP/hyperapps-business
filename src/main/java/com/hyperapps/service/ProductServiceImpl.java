@@ -21,18 +21,18 @@ public class ProductServiceImpl implements ProductService {
 	ProductDao productDao;
 	
 	@Override
-	public List<Category> getStoreCategoryList(int storeId,int branchId) {
-		return productDao.getStoreCategoryList(storeId,branchId);
+	public List<Category> getStoreCategoryList(int storeId) {
+		return productDao.getStoreCategoryList(storeId);
 	}
 
 	@Override
-	public List<CategoryTree> categoryTreeFetch(int storeId, int branchId){
-		return productDao.categoryTreeFetch(storeId,branchId);
+	public List<CategoryTree> categoryTreeFetch(int storeId){
+		return productDao.categoryTreeFetch(storeId);
 	}
 	
 	@Override
-	public List<Product> getProductsList(int storeId,int catId,int branchId) {
-		return productDao.getProductsList(storeId,catId,branchId);
+	public List<Product> getProductsList(int storeId,int catId) {
+		return productDao.getProductsList(storeId,catId);
 	}
 
 	@Override

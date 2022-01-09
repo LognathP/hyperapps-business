@@ -10,7 +10,7 @@ public interface RetailerQueryConstants {
 	
 	String GET_TEAM_MEMBERS_DETAILS = "select u.id,u.name,u.email,u.status,u.mobile,u.parent_id,u.user_group,u.created_at,u.updated_at from users u where u.parent_id = ?";
 
-	String GET_PROFILE_DETAILS = "select p.id,p.business_name,p.business_short_desc,p.business_long_desc,p.store_category_ids,p.physical_store_status,p.physical_store_address,p.business_phone,p.business_operating_mode,p.business_operating_timings,p.status,p.created_at,p.updated_at,p.user_id,p.user_image,p.store_tax_status,p.store_tax_percentage,p.store_tax_gst,p.branch_count from profiles p where p.id = (select u.store_id from users u where u.id = ?)";	
+	String GET_PROFILE_DETAILS = "select p.id,p.business_name,p.business_short_desc,p.business_long_desc,p.store_category_ids,p.physical_store_status,p.physical_store_address,p.business_phone,p.business_operating_mode,p.business_operating_timings,p.status,p.created_at,p.updated_at,p.user_id,p.user_image,p.store_tax_status,p.store_tax_percentage,p.store_tax_gst from profiles p where p.id = (select u.store_id from users u where u.id = ?)";	
 
 	String GET_CATEGORY_DETAILS = "select r.id,r.name,r.image_path,i.active,r.category_status from rootcategories r,invrootcategories i where r.id = i.rootcategory_id and r.id = ? and i.store_id = ?";
 	
