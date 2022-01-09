@@ -54,7 +54,7 @@ public class DESEncryptor {
     }
     
     public static void main(String[] args) {
-		System.out.println(encrypt("Test@123", "hyperapp123"));
+		System.out.println(encrypt("Tmm@nag3r", "hyperapp123"));
 	}
      
 }

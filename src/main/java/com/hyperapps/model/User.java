@@ -26,6 +26,7 @@ public class User {
 	    public int store_id;
 	    public int isOwner;
 	    public int teamMemberCount;
+	    public String user_image;
 
 	    @Getter
 	    @Setter

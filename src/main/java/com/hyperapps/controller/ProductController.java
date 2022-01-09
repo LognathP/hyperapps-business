@@ -25,24 +25,24 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	@Autowired
 	ProductBusiness productBusiness;
 
-	@GetMapping("/api/retailer/category/getStoreCategory/{storeId}")
-	public Object getStoreCategoryList(@PathVariable ("storeId") int storeId,@RequestParam String token) throws Exception {
+	@GetMapping("/api/retailer/category/getStoreCategory/{storeId}/{branchId}")
+	public Object getStoreCategoryList(@PathVariable ("storeId") int storeId,@PathVariable ("branchId") int branchId,@RequestParam String token) throws Exception {
 		Logger.info(this.getClass(),"GET STORE CATEGORY API CALL STARTED AT "+dateFormat.format(new Date()));
-		return productBusiness.getStoreCategoryList(storeId,token);
+		return productBusiness.getStoreCategoryList(storeId,branchId,token);
 	}
 	
-	@GetMapping("/api/retailer/category/categorytree/{storeId}")
-	public Object categoryTreeFetch(@PathVariable ("storeId") int storeId,@RequestParam String token) throws Exception {
+	@GetMapping("/api/retailer/category/categorytree/{storeId}/{branchId}")
+	public Object categoryTreeFetch(@PathVariable ("storeId") int storeId,@PathVariable ("branchId") int branchId,@RequestParam String token) throws Exception {
 		Logger.info(this.getClass(),"GET STORE CATEGORY TREE API CALL STARTED AT "+dateFormat.format(new Date()));
-		return productBusiness.categoryTreeFetch(storeId,token);
+		return productBusiness.categoryTreeFetch(storeId,branchId,token);
 	}
 	
-	@GetMapping("/api/retailer/products/list/{storeId}/{categoryId}")
-	public Object getProductList(@PathVariable("storeId") int storeId,@PathVariable("categoryId") int categoryId,
+	@GetMapping("/api/retailer/products/list/{storeId}/{categoryId}/{branchId}")
+	public Object getProductList(@PathVariable("storeId") int storeId,@PathVariable("categoryId") int categoryId,@PathVariable("branchId") int branchId,
 			@RequestParam String token) {
 		Logger.info(this.getClass(),"GET PRODUCTS API CALL STARTED AT "+dateFormat.format(new Date()));
-		Logger.info(this.getClass(),"ID's "+storeId + " " + categoryId);
-		return productBusiness.getProductsList(storeId,categoryId,token);
+		Logger.info(this.getClass(),"ID's "+storeId + " " + categoryId + " "+branchId);
+		return productBusiness.getProductsList(storeId,categoryId,branchId,token);
 	}
 	
 	@PostMapping("/api/retailer/category/update/parent")

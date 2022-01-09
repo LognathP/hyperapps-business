@@ -152,5 +152,11 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 				email_content,fcm_title,fcm_body,fcm_data);
 	}
 	
+	@GetMapping("/api/retailer/branch/list/{storeId}")
+	public Object getBranchList(@PathVariable ("storeId") int storeId,@RequestParam String token) throws Exception {
+		Logger.info(this.getClass(),"GET BRANCH DETAILS API CALL STARTED AT "+dateFormat.format(new Date()));
+		return storeBusiness.getBranchList(storeId,token);
+	}
+	
 	
 }

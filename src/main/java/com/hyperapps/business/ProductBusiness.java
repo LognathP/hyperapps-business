@@ -43,10 +43,10 @@ public class ProductBusiness {
 	@Autowired
 	Response response;
 
-	public Object getStoreCategoryList(int storeId, String token) {
+	public Object getStoreCategoryList(int storeId,int branchId, String token) {
 		ResponseEntity<Object> respEntity = null;
 		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
-			List<Category> catList = productService.getStoreCategoryList(storeId);
+			List<Category> catList = productService.getStoreCategoryList(storeId,branchId);
 			if (catList.size() != 0) {
 				LOGGER.info(this.getClass(), "CATEGORIES LISTED SUCCESSFULLY");
 				response.setStatus(HttpStatus.OK.toString());
@@ -74,10 +74,10 @@ public class ProductBusiness {
 		return respEntity;
 	}
 
-	public Object categoryTreeFetch(int storeId, String token) {
+	public Object categoryTreeFetch(int storeId, int branchId, String token) {
 		ResponseEntity<Object> respEntity = null;
 		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
-			List<CategoryTree> catList = productService.categoryTreeFetch(storeId);
+			List<CategoryTree> catList = productService.categoryTreeFetch(storeId,branchId);
 			if (catList.size() != 0) {
 				LOGGER.info(this.getClass(), "CATEGORY TREE LISTED SUCCESSFULLY");
 				response.setStatus(HttpStatus.OK.toString());
@@ -100,10 +100,10 @@ public class ProductBusiness {
 		return respEntity;
 	}
 
-	public Object getProductsList(int storeId, int Category_id, String token) {
+	public Object getProductsList(int storeId, int Category_id, int branchId, String token) {
 		ResponseEntity<Object> respEntity = null;
 		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
-			List<Product> cList = productService.getProductsList(storeId, Category_id);
+			List<Product> cList = productService.getProductsList(storeId, Category_id,branchId);
 			if (cList.size() > 0) {
 				LOGGER.info(this.getClass(), "PRODUCTS & CATEGORIES LISTED SUCCESSFULLY");
 				response.setStatus(HttpStatus.OK.toString());

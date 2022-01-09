@@ -32,7 +32,7 @@ public class ProductDaoImpl implements ProductDao {
 	JdbcTemplate jdbctemp;
 	
 	@Override
-	public List<Category> getStoreCategoryList(int storeId) {
+	public List<Category> getStoreCategoryList(int storeId,int branchId) {
 		Connection connection = null;
 		PreparedStatement preStmt = null;
 		ResultSet res = null;
@@ -41,6 +41,7 @@ public class ProductDaoImpl implements ProductDao {
 			connection = jdbctemp.getDataSource().getConnection();
 			preStmt = connection.prepareStatement(ProductQueryConstants.GET_ALL_CATEGORIES);
 			preStmt.setInt(1, storeId);
+			preStmt.setInt(2, branchId);
 			res = preStmt.executeQuery();
 			while(res.next()) {
 				Category cat = new Category();
@@ -68,7 +69,7 @@ public class ProductDaoImpl implements ProductDao {
 	}
 	
 	@Override
-	public List<CategoryTree> categoryTreeFetch(int storeId) {
+	public List<CategoryTree> categoryTreeFetch(int storeId,int branchId) {
 		Connection connection = null;
 		PreparedStatement preStmt = null;
 		ResultSet res = null;
@@ -83,6 +84,7 @@ public class ProductDaoImpl implements ProductDao {
 			connection = jdbctemp.getDataSource().getConnection();
 			preStmt = connection.prepareStatement(ProductQueryConstants.GET_STORE_ROOT_CATEGORY);
 			preStmt.setInt(1, storeId);
+			preStmt.setInt(2, branchId);
 			res = preStmt.executeQuery();
 			while(res.next()) {
 				CategoryTree catTree = new CategoryTree();
@@ -150,7 +152,7 @@ public class ProductDaoImpl implements ProductDao {
 	}
 	
 	@Override
-	public List<Product> getProductsList(int storeId,int catgId) {
+	public List<Product> getProductsList(int storeId,int catgId,int branchId) {
 		Connection connection = null;
 		PreparedStatement preStmt = null;
 		ResultSet res = null;
@@ -160,6 +162,7 @@ public class ProductDaoImpl implements ProductDao {
 			preStmt = connection.prepareStatement(ProductQueryConstants.GET_PRODUCT_DETAILS_BY_CATEGORY);
 			preStmt.setInt(1, storeId);
 			preStmt.setInt(2, catgId);
+			preStmt.setInt(3, branchId);
 			res = preStmt.executeQuery();
 			while(res.next()) {
 				Product products = new Product();

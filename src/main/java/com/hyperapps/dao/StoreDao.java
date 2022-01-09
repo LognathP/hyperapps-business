@@ -12,6 +12,7 @@ import com.hyperapps.model.Designation;
 import com.hyperapps.model.OfferHistoryData;
 import com.hyperapps.model.Product;
 import com.hyperapps.model.Store;
+import com.hyperapps.model.StoreBranch;
 import com.hyperapps.model.WelcomeMessage;
 
 @Component
@@ -55,5 +56,7 @@ public interface StoreDao {
 	public String getMailId(String id);
 
 	public ArrayList<String> getBusinessDeviceToken(String custId);
+
+	public List<StoreBranch> getBranchList(int storeId);
 
 }

@@ -114,6 +114,7 @@ public class RetailerDaoImpl implements RetailerDao {
 					user.setBusiness_long_desc(res1.getString(3));
 					user.setStore_status(res1.getInt(4));
 					user.setStore_id(res1.getInt(5));
+					user.setUser_image(res1.getString(6));
 				}
 				preStmt1.close();
 				res1.close();
@@ -230,6 +231,7 @@ public class RetailerDaoImpl implements RetailerDao {
 				prof.setStore_tax_status(res.getInt(16));
 				prof.setStore_tax_percentage(res.getString(17));
 				prof.setStore_tax_gst(res.getString(18));
+				prof.setBranch_count(res.getInt(19));
 				profileList.add(prof);
 			}
 

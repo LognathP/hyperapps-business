@@ -23,6 +23,7 @@ import com.hyperapps.model.Designation;
 import com.hyperapps.model.OfferHistoryData;
 import com.hyperapps.model.Response;
 import com.hyperapps.model.Store;
+import com.hyperapps.model.StoreBranch;
 import com.hyperapps.model.WelcomeMessage;
 import com.hyperapps.model.Profile.Business_operating_timings;
 import com.hyperapps.service.StoreService;
@@ -561,7 +562,8 @@ public class StoreBusiness {
 						emailService.sendEmail(mailId, email_subject, email_content);
 					}
 					
-				}	
+				}
+				
 				
 			}
 			else if (notification_type.equalsIgnoreCase(HyperAppsConstants.PUSH_NOTIFICATION))
@@ -575,8 +577,45 @@ public class StoreBusiness {
 				LOGGER.info(getClass(), "SEND PUSH NOTIFICATION TOKEN ARRAY "+tokenArray.toString());
 				
 				pushNotificationService.sendPushNotificationWithData(tokenArray, fcm_body, fcm_title);
+				
+				
 			}
-		return null;
+			response.setStatus(HttpStatus.OK.toString());
+			response.setMessage("Notification Sent Successfully");
+			response.setError(HyperAppsConstants.RESPONSE_FALSE);
+			response.setData(null);
+			apiResponse.setResponse(response);
+			return new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+	}
+
+	public Object getBranchList(int storeId, String token) {
+		ResponseEntity<Object> respEntity = null;
+		if ((respEntity = retailerValidationService.validateToken(token, respEntity)) == null) {
+			if ((respEntity = retailerValidationService.validateStoreId(storeId, respEntity)) == null) {
+				List<StoreBranch> branchList = new ArrayList<StoreBranch>();
+				branchList = storeService.getBranchList(storeId);
+				if (branchList.size() > 0) {
+					LOGGER.info(this.getClass(), "BRANCHES LISTED SUCCESSFULLY");
+					response.setStatus(HttpStatus.OK.toString());
+					response.setMessage("Branches Listed Successfully");
+					HashMap<String, Object> data = new HashMap<String, Object>();
+					data.put(ResponseKeys.data, branchList);
+					response.setData(new JSONObject(data).toMap());
+					response.setError(HyperAppsConstants.RESPONSE_FALSE);
+					apiResponse.setResponse(response);
+					respEntity = new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+				} else {
+					LOGGER.error(this.getClass(), "BRANCHES LIST NOT FOUND");
+					response.setStatus(HttpStatus.NOT_FOUND.toString());
+					response.setMessage("Branches not found");
+					response.setData(null);
+					response.setError(HyperAppsConstants.RESPONSE_TRUE);
+					apiResponse.setResponse(response);
+					respEntity = new ResponseEntity<Object>(apiResponse, HttpStatus.OK);
+				}
+			}
+		}
+		return respEntity;
 	}
 
 }

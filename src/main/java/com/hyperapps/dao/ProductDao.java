@@ -15,11 +15,11 @@ import com.hyperapps.model.WelcomeMessage;
 @Component
 public interface ProductDao {
 	
-	public List<Category> getStoreCategoryList(int storeId);
+	public List<Category> getStoreCategoryList(int storeId, int branchId);
 
-	public List<CategoryTree> categoryTreeFetch(int store_id);
+	public List<CategoryTree> categoryTreeFetch(int store_id, int branchId);
 
-	public List<Product> getProductsList(int storeId, int catId);
+	public List<Product> getProductsList(int storeId, int catId, int branchId);
 
 	public boolean updateParentCategory(int id, int active);
 
